@@ -27,13 +27,6 @@ export default function AboutSection() {
     return () => observer.disconnect();
   }, []);
 
-  const goals = [
-    t.about.values.goal1,
-    t.about.values.goal2,
-    t.about.values.goal3,
-    t.about.values.goal4,
-    t.about.values.goal5,
-  ];
 
   return (
     <section id="about" className="about-section" ref={sectionRef}>
