@@ -45,33 +45,60 @@ export default function MissionSection() {
       <div className="container" dir={isRTL ? 'rtl' : 'ltr'}>
         
         {/* Mission Section */}
-        <div className="mission-animate" style={{ marginBottom: '80px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
-          <div style={{ 
-            background: 'var(--color-surface)', 
-            border: '1px solid var(--color-surface-b)', 
-            borderRadius: '24px', 
-            padding: '40px', 
-            boxShadow: 'var(--shadow-card)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-            <div style={{ position: 'absolute', top: 0, right: isRTL ? 0 : 'auto', left: isRTL ? 'auto' : 0, width: '4px', height: '100%', background: 'var(--blue-primary)' }} />
-            <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '20px', textAlign: isRTL ? 'right' : 'left' }}>
-              {t.about.mission.title}
+        <div className="mission-animate" style={{ marginBottom: '100px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
+          <div style={{ textAlign: isRTL ? 'right' : 'left', maxWidth: '1000px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: '38px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', justifyContent: isRTL ? 'flex-end' : 'flex-start' }}>
+              <span style={{ fontSize: '36px' }}>🎯</span> {t.about.mission.title}
             </h2>
-            <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '24px', textAlign: isRTL ? 'right' : 'left' }}>
+            <p style={{ fontSize: '18px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '40px' }}>
               {t.about.mission.desc}
             </p>
-            <h4 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '16px', textAlign: isRTL ? 'right' : 'left' }}>
+            <h4 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '24px' }}>
               {t.about.mission.pointsTitle}
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
-              {t.about.mission.points.map((point, index) => (
-                <div key={index} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                  <span style={{ color: 'var(--blue-primary)', marginTop: '2px', fontSize: '18px' }}>•</span>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+              {t.about.mission.points.map((point, index) => {
+                const kuNumbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
+                return (
+                <div key={index} style={{ 
+                  display: 'flex', 
+                  gap: '16px', 
+                  alignItems: 'flex-start',
+                  background: 'var(--color-surface)',
+                  padding: '24px',
+                  borderRadius: '16px',
+                  boxShadow: 'var(--shadow-card)',
+                  border: '1px solid var(--color-surface-b)',
+                  transition: 'transform 0.3s ease, border-color 0.3s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.borderColor = 'var(--blue-primary)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.borderColor = 'var(--color-surface-b)';
+                }}
+                >
+                  <div style={{
+                    minWidth: '36px',
+                    height: '36px',
+                    borderRadius: '10px',
+                    background: 'rgba(51,170,255,0.1)',
+                    color: 'var(--blue-primary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 800,
+                    fontSize: '18px',
+                    flexShrink: 0,
+                  }}>
+                    {isRTL ? kuNumbers[index] || index + 1 : index + 1}
+                  </div>
                   <p style={{ margin: 0, fontSize: '15px', lineHeight: 1.6, color: 'var(--color-text)' }}>{point}</p>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         </div>
