@@ -4,6 +4,38 @@ import Link from 'next/link';
 import { useLanguage } from '../../LanguageContext';
 import { useActivityTranslation } from '../../hooks/useActivityTranslation';
 
+/**
+ * Strip all HTML attributes and non-content wrapper tags,
+ * keeping only clean paragraph text. Handles ChatGPT-pasted HTML.
+ */
+function sanitizeContent(html) {
+  if (!html) return '';
+  // Extract text from <p> tags only (strips all wrappers like div, article, etc.)
+  const pMatches = [];
+  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let match;
+  while ((match = pRegex.exec(html)) !== null) {
+    // Strip any remaining inner tags but keep text
+    const text = match[1]
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+      .trim();
+    if (text) pMatches.push(text);
+  }
+  // If we found <p> tags, return clean paragraphs
+  if (pMatches.length > 0) {
+    return pMatches.map(t => `<p>${t}</p>`).join('\n');
+  }
+  // Fallback: strip all tags, split by newlines
+  return html
+    .replace(/<\/p>/gi, '\n').replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').trim();
+}
+
 const KU_MONTHS = [
   'کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران',
   'تەممووز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم',
@@ -45,9 +77,10 @@ export default function ActivityDetailClient({ activity }) {
   const title = lang === 'ku'
     ? (translated.titleKu || translated.titleEn)
     : (translated.titleEn || translated.titleKu);
-  const content = lang === 'ku'
+  const rawContent = lang === 'ku'
     ? (translated.contentKu || translated.contentEn)
     : (translated.contentEn || translated.contentKu);
+  const content = sanitizeContent(rawContent);
   const allImages = [
     ...(activity.coverImage ? [activity.coverImage] : []),
     ...(activity.images || []),
