@@ -12,9 +12,9 @@ const translations = {
     // Hero
     hero: {
       badge: 'Established 2022',
-      title: 'Empowering',
-      titleHighlight: 'Youth',
-      titleEnd: 'in Raparin',
+      title: 'Today we build',
+      titleHighlight: 'the leaders',
+      titleEnd: 'of tomorrow',
       goals: [
         'Education',
         'Awareness & Skills Development',
