@@ -89,12 +89,49 @@ export default function AboutSection() {
               {t.about.text1}
             </p>
 
+            <h3 className="about-animate" style={{
+              opacity: 0,
+              transform: 'translateY(20px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+              textAlign: isRTL ? 'right' : 'left',
+              marginTop: '30px',
+              marginBottom: '10px',
+              fontSize: '22px',
+              color: 'var(--color-heading)'
+            }}>
+              {t.about.subtitle}
+            </h3>
+
             <p className="about-text about-animate" style={{
               opacity: 0,
               transform: 'translateY(20px)',
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}>
               {t.about.text2}
+            </p>
+
+            <p className="about-text about-animate" style={{
+              opacity: 0,
+              transform: 'translateY(20px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+            }}>
+              {t.about.text3}
+            </p>
+
+            <p className="about-text about-animate" style={{
+              opacity: 0,
+              transform: 'translateY(20px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+            }}>
+              {t.about.text4}
+            </p>
+
+            <p className="about-text about-animate" style={{
+              opacity: 0,
+              transform: 'translateY(20px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+            }}>
+              {t.about.text5}
             </p>
 
 

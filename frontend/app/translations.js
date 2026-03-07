@@ -35,9 +35,13 @@ const translations = {
     // About
     about: {
       tag: 'About Us',
-      title: 'Building Tomorrow\'s Leaders Today',
-      text1: 'The Raparin Youth Organization was founded in 2022 with a mission to empower young people across the Raparin region. We believe in the transformative power of youth and are committed to providing opportunities for growth, learning, and community engagement.',
-      text2: 'Through our diverse programs in leadership, education, culture, and sports, we help young people discover their potential and become positive agents of change in their communities.',
+      title: 'Building the Leaders of Tomorrow',
+      text1: 'The Raparin Youth Organization was established in 2022 with the aim of empowering young people and developing their skills and abilities across Kurdistan. We believe that youth are the driving force of change and can play a vital role in creating a better future for their communities.',
+      subtitle: 'Commitment to Youth Development',
+      text2: 'Raparin Youth Organization works to create a supportive environment where young people can grow, develop their talents, and share their ideas. We encourage youth to participate actively in addressing community challenges and contributing to positive change.',
+      text3: 'Our programs include trainings, workshops, and various activities in the fields of leadership, education, culture, and the environment. Through these initiatives, we aim to inspire young people to become the leaders of tomorrow and to create a positive impact in their communities.',
+      text4: 'We also work to increase opportunities for girls and women, supporting their participation and strengthening their role in social and economic development.',
+      text5: 'We believe that investing in youth and supporting their potential is the foundation for sustainable development and stability in society.',
       values: {
         goal1: { title: 'Education', desc: 'Providing quality educational opportunities to empower youth' },
         goal2: { title: 'Awareness & Skills Development', desc: 'Raising awareness and building professional skills among young people' },
@@ -149,8 +153,12 @@ const translations = {
     about: {
       tag: 'دەربارەی ئێمە',
       title: 'ئەمڕۆ ڕابەرانی سبەی دروست دەکەین',
-      text1: 'ڕێکخراوی گەنجانی ڕاپەڕین لە ساڵی ٢٠٢٢ دامەزراوە بە ئامانجی بەهێزکردنی گەنجان لە سەرتاسەری ناوچەی ڕاپەڕین. ئێمە باوەڕمان بە هێزی گۆڕانکشی گەنجانە و بەرپرسیارێتی خۆمان هەیە بۆ دابینکردنی دەرفەت بۆ گەشەکردن، فێربوون، و بەشداری لە کۆمەڵگا.',
-      text2: 'لە ڕێگەی بەرنامەکانی جۆراوجۆرمان لە ڕابەرایەتی، پەروەردە، کەلتوور، و وەرزشدا، گەنجان یارمەتی دەدەین ئارەزوو و توانایانیان دەدۆزنەوە و ببنە کارگێڕانی ئەرێنی گۆڕانکاری لە کۆمەڵگاکانیان.',
+      text1: 'ڕێکخراوی گەنجانی ڕاپەڕین لە ساڵی ٢٠٢٢ دامەزراوە، بە ئامانجی بەهێزکردنی گەنجان و پەرەپێدانی توانا و لێهاتووییەکانیان لە سەرتاسەری کوردستان. ئێمە باوەڕمان بەوەیە کە گەنجان هێزی سەرەکی گۆڕانکارین و دەتوانن ڕۆڵێکی گرنگ لە دروستکردنی داهاتوویەکی باشتر بگێڕن.',
+      subtitle: 'پابەندبوون بە گەشەکردنی گەنجان',
+      text2: 'ڕێکخراوی گەنجانی ڕاپەڕین هەوڵ دەدات ژینگەیەکی گونجاو بۆ گەشەکردنی گەنجان دابین بکات، بۆ ئەوەی بتوانن توانا و بیرۆکەکانیان پەرە پێبدەن و بەشدار بن لە چارەسەرکردنی کێشەکانی کۆمەڵگا.',
+      text3: 'پرۆگرام و چالاکییەکانمان پێکدێن لە ڕاهێنان، وۆرکشۆپ و بەرنامە جۆراوجۆرەکان لە بوارەکانی ڕابەرایەتی، پەروەردە، کەلتوور و ژینگە. لە ڕێگەی ئەم بەرنامانەدا هەوڵ دەدەین گەنجان هاندەربکەین بۆ ئەوەی ببنە ڕابەرانی داهاتوو و کاریگەرییەکی ئەرێنی لە کۆمەڵگاکانیاندا دروست بکەن.',
+      text4: 'هەروەها هەوڵ دەدەین دەرفەتی کار و بەشداری بۆ کچان و ژنان زیاتر بکەین، بۆ ئەوەی ڕۆڵێکی کاریگەرتر لە گەشە و پێشکەوتنی کۆمەڵگادا ببینن.',
+      text5: 'ئێمە باوەڕمان وایە کە پەرەپێدانی گەنجان و گرنگیدان بە تواناکانیان دەتوانێت بنچینەیەکی بەهێز بۆ پێشکەوتن و سەقامگیری کۆمەڵگا دروست بکات.',
       values: {
         goal1: { title: 'پەروەردەکردن', desc: 'دابینکردنی دەرفەتی پەروەردەیی بەکوالیتی بۆ بەهێزکردنی گەنجان' },
         goal2: { title: 'هۆشیارکردنەوە و پەرەپێدانی لێهاتووی', desc: 'هۆشیارکردنەوە و بینانی شارەزایی پیشەیی لەنێوان گەنجان' },
