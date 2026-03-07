@@ -38,7 +38,7 @@ function getLimiters() {
     }),
     upload: new Ratelimit({
       redis,
-      limiter: Ratelimit.fixedWindow(15, '1 h'),
+      limiter: Ratelimit.fixedWindow(100, '1 h'),
       prefix: 'rl:upload',
       analytics: false,
     }),
