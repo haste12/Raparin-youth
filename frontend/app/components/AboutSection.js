@@ -41,23 +41,7 @@ export default function AboutSection() {
             <div className="about-image-card">
               <img src="/logo.png" alt="Raparin Youth Organization" />
 
-              {/* Float badge 1 */}
-              <div className="about-float-badge about-float-badge-1">
-                <span className="about-float-badge-icon">🎯</span>
-                <div className="about-float-badge-text">
-                  <strong>500+</strong>
-                  <span>{isRTL ? 'ئەندام چالاک' : 'Active Members'}</span>
-                </div>
-              </div>
 
-              {/* Float badge 2 */}
-              <div className="about-float-badge about-float-badge-2">
-                <span className="about-float-badge-icon">⭐</span>
-                <div className="about-float-badge-text">
-                  <strong>{isRTL ? 'دامەزراوە ٢٠٢٢' : 'Est. 2022'}</strong>
-                  <span>{isRTL ? 'ڕاپەڕین' : 'Raparin'}</span>
-                </div>
-              </div>
             </div>
           </div>
 
