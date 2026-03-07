@@ -106,7 +106,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <div className="contact-detail-label">{item.label}</div>
-                <div className="contact-detail-value">{item.value}</div>
+                <div className="contact-detail-value" dir="ltr" style={{ whiteSpace: 'pre-line' }}>{item.value}</div>
               </div>
             </div>
           ))}

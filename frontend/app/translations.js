@@ -79,8 +79,8 @@ const translations = {
       description: 'Have questions, suggestions, or want to collaborate? We\'d love to hear from you. Reach out and let\'s build a better community together.',
       details: {
         location: { label: 'Location', value: 'Qaladze / Above Sardasht Hotel / Next to Asoda Refrigerator' },
-        email: { label: 'Email', value: 'info@raparin-youth.org' },
-        phone: { label: 'Phone', value: '0770 135 7874' },
+        email: { label: 'Email', value: 'raparinyouthorganization@gmail.com' },
+        phone: { label: 'Phone', value: '0770 598 9003\n0770 526 5050' },
         hours: { label: 'Working Hours', value: 'Sun – Thu, 9:00 AM – 5:00 PM' },
       },
       social: 'Follow Us',
@@ -196,8 +196,8 @@ const translations = {
       description: 'پرسیارت هەیە، پێشنیاری هەیە، یان دەتەوێ هاوکاری بکەیت؟ خۆشحاڵ دەبین لەبارەت بیستین. پەیوەندیمان پێوە بکە و با کۆمەڵگایەکی باشتر دروست بکەین.',
       details: {
         location: { label: 'شوێن', value: 'قەلاّدزێ / سەروو هۆتێل سەردەشت / تەنیشت ساردەمەنی ئاسووددە' },
-        email: { label: 'ئیمەیڵ', value: 'info@raparin-youth.org' },
-        phone: { label: 'تەلەفۆن', value: '0770 135 7874' },
+        email: { label: 'ئیمەیڵ', value: 'raparinyouthorganization@gmail.com' },
+        phone: { label: 'تەلەفۆن', value: '0770 598 9003\n0770 526 5050' },
         hours: { label: 'کاتی کار', value: 'یەکشەممە – پێنجشەممە، ٩:٠٠ – ٥:٠٠' },
       },
       social: 'شوێنمان بکەوە',

@@ -105,13 +105,18 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <li>
-                <a href="mailto:info@raparin-youth.org" style={{ fontSize: '14px', color: 'var(--color-footer-link)', textDecoration: 'none' }}>
-                  info@raparin-youth.org
+                <a href="mailto:raparinyouthorganization@gmail.com" style={{ fontSize: '14px', color: 'var(--color-footer-link)', textDecoration: 'none' }}>
+                  raparinyouthorganization@gmail.com
                 </a>
               </li>
-              <li>
-                              <a href="tel:+9647701357874" style={{ fontSize: '14px', color: 'var(--color-footer-link)', textDecoration: 'none' }}>
-                  0770 135 7874
+              <li dir="ltr">
+                <a href="tel:+9647705989003" style={{ fontSize: '14px', color: 'var(--color-footer-link)', textDecoration: 'none' }}>
+                  0770 598 9003
+                </a>
+              </li>
+              <li dir="ltr">
+                <a href="tel:+9647705265050" style={{ fontSize: '14px', color: 'var(--color-footer-link)', textDecoration: 'none' }}>
+                  0770 526 5050
                 </a>
               </li>
               <li>
