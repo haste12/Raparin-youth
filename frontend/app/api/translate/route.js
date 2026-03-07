@@ -44,94 +44,97 @@ export async function POST(request) {
 async function translateText(text, targetLang, sourceLang) {
   if (!text || !text.trim()) return text;
 
-  // Detect if the text contains HTML tags
   const isHtml = /<[a-z][\s\S]*>/i.test(text);
 
   try {
     if (isHtml) {
-      // For HTML content: strip tags, translate plain text, then we return translated plain text.
-      // The structure/HTML tags come from the rich text editor and are layout-only;
-      // translating the plain text is safest and avoids Google mangling the HTML attributes.
       const plainText = stripHtml(text);
-      const translated = await callGoogleTranslateApi(plainText, targetLang, sourceLang);
-      // Re-wrap in the original paragraph structure
+      const translated = await callGoogleTranslateApi(plainText, targetLang);
       return rewrapInParagraphs(text, translated);
     } else {
-      return await callGoogleTranslateApi(text, targetLang, sourceLang);
+      return await callGoogleTranslateApi(text, targetLang);
     }
   } catch {
-    // Fallback: return original text if translation fails
     return text;
   }
 }
 
 /**
  * Core Google Translate API call.
- * Tries two endpoints: the mobile/m endpoint (reliable from cloud IPs) first,
- * then falls back to the gtx JSON endpoint.
+ * Always uses 'auto' source detection (more reliable than named 'ckb' for Kurdish).
+ * Tries three endpoints in order.
  */
-async function callGoogleTranslateApi(text, targetLang, sourceLang) {
-  // Try the mobile endpoint first — it works reliably from cloud/Vercel IPs
+async function callGoogleTranslateApi(text, targetLang) {
+  // Try dict-chrome-ex JSON endpoint (works well from cloud IPs)
   try {
-    return await translateViaMobile(text, targetLang, sourceLang);
+    return await translateViaDictChrome(text, targetLang);
+  } catch { /* fall through */ }
+
+  // Try the mobile HTML endpoint
+  try {
+    return await translateViaMobile(text, targetLang);
+  } catch { /* fall through */ }
+
+  // Last resort: gtx
+  try {
+    return await translateViaGtx(text, targetLang);
   } catch {
-    // Fall back to gtx JSON endpoint
-    return await translateViaGtx(text, targetLang, sourceLang);
+    return text; // return original if all fail
   }
 }
 
-async function translateViaMobile(text, targetLang, sourceLang) {
+async function translateViaDictChrome(text, targetLang) {
   const params = new URLSearchParams({
-    sl: sourceLang === 'auto' ? 'auto' : sourceLang,
-    tl: targetLang,
-    q: text,
-  });
-  const url = `https://translate.google.com/m?${params}`;
-
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
-    },
-    signal: AbortSignal.timeout(10000),
-  });
-
-  if (!res.ok) throw new Error(`Mobile translate returned ${res.status}`);
-
-  const html = await res.text();
-  const match = html.match(/<div class="result-container">([\s\S]*?)<\/div>/);
-  if (!match) throw new Error('Could not parse mobile translate response');
-
-  return match[1]
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
-}
-
-async function translateViaGtx(text, targetLang, sourceLang) {
-  const params = new URLSearchParams({
-    client: 'gtx',
-    sl: sourceLang,
+    client: 'dict-chrome-ex',
+    sl: 'auto',
     tl: targetLang,
     dt: 't',
     q: text,
   });
   const url = `https://translate.googleapis.com/translate_a/single?${params}`;
-
   const res = await fetch(url, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36',
-    },
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36' },
     signal: AbortSignal.timeout(8000),
   });
-
-  if (!res.ok) throw new Error(`Google Translate returned ${res.status}`);
-
+  if (!res.ok) throw new Error(`dict-chrome-ex returned ${res.status}`);
   const data = await res.json();
-  return data[0]?.map((segment) => segment?.[0] ?? '').join('') ?? text;
+  const result = data[0]?.map((s) => s?.[0] ?? '').join('');
+  if (!result) throw new Error('empty result');
+  return result;
+}
+
+async function translateViaMobile(text, targetLang) {
+  const params = new URLSearchParams({ sl: 'auto', tl: targetLang, q: text });
+  const url = `https://translate.google.com/m?${params}`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1' },
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(`mobile returned ${res.status}`);
+  const html = await res.text();
+  // Try multiple possible class names Google uses
+  const match =
+    html.match(/<div class="result-container"[^>]*>([\s\S]*?)<\/div>/) ||
+    html.match(/class="t0"[^>]*>([\s\S]*?)<\/div>/) ||
+    html.match(/<div dir="(?:ltr|rtl)">([\s\S]*?)<\/div>/);
+  if (!match) throw new Error('could not parse mobile response');
+  return match[1]
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
+}
+
+async function translateViaGtx(text, targetLang) {
+  const params = new URLSearchParams({ client: 'gtx', sl: 'auto', tl: targetLang, dt: 't', q: text });
+  const url = `https://translate.googleapis.com/translate_a/single?${params}`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36' },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`gtx returned ${res.status}`);
+  const data = await res.json();
+  const result = data[0]?.map((s) => s?.[0] ?? '').join('');
+  if (!result) throw new Error('empty result');
+  return result;
 }
 
 /**
