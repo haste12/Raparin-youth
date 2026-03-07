@@ -93,11 +93,11 @@ export function useActivityTranslation(activities) {
 
     translateActivities(toTranslate)
       .then((results) => {
-        // Store results in the module-level cache.
+        // Store results in the module-level cache — only if actually translated.
         results.forEach(({ id, title, shortDesc, content }) => {
-          translationCache.set(`${id}:en:title`, title);
-          translationCache.set(`${id}:en:shortDesc`, shortDesc);
-          if (content !== undefined) {
+          if (isDifferentText(title))     translationCache.set(`${id}:en:title`, title);
+          if (isDifferentText(shortDesc)) translationCache.set(`${id}:en:shortDesc`, shortDesc);
+          if (content !== undefined && isDifferentText(content)) {
             translationCache.set(`${id}:en:content`, content);
           }
         });
@@ -122,6 +122,11 @@ export function useActivityTranslation(activities) {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Checks if text is truthy and not purely whitespace */
+function isDifferentText(text) {
+  return Boolean(text && typeof text === 'string' && text.trim().length > 0);
+}
 
 /** Merge cached translations back into the activities array. */
 function applyCache(activities) {
