@@ -2,21 +2,12 @@ import { NextResponse } from 'next/server';
 
 /**
  * POST /api/translate
- * Body: { texts: string[], targetLang: 'en' | 'ku', sourceLang?: string }
+ * Body: { texts: string[], targetLang: 'en' | 'ku' }
  * Returns: { translations: string[] }
  *
- * Uses LibreTranslate (open-source, self-hostable translation API).
- * Set LIBRETRANSLATE_URL and LIBRETRANSLATE_API_KEY in Vercel env vars.
+ * Uses MyMemory API — completely free, no API key required.
+ * Fallback: Google Translate unofficial endpoints.
  */
-
-const LIBRE_URL = (process.env.LIBRETRANSLATE_URL || 'https://libretranslate.com').replace(/\/$/, '');
-const LIBRE_KEY = process.env.LIBRETRANSLATE_API_KEY || '';
-
-// Fallback public instances tried in order if the primary fails
-const FALLBACK_URLS = [
-  'https://translate.fedilab.app',
-  'https://lt.vern.cc',
-];
 
 export async function POST(request) {
   try {
@@ -29,7 +20,6 @@ export async function POST(request) {
       return NextResponse.json({ error: 'targetLang is required' }, { status: 400 });
     }
 
-    // Translate all texts in parallel
     const translations = await Promise.all(
       texts.map((text) => translateText(text, targetLang))
     );
@@ -41,10 +31,6 @@ export async function POST(request) {
   }
 }
 
-/**
- * Translate a single string. Strips HTML before translating, then
- * re-wraps in paragraph tags to preserve structure.
- */
 async function translateText(text, targetLang) {
   if (!text || !text.trim()) return text;
 
@@ -53,93 +39,98 @@ async function translateText(text, targetLang) {
   try {
     if (isHtml) {
       const plainText = stripHtml(text);
-      const translated = await callLibreTranslate(plainText, targetLang);
+      const translated = await callTranslateApi(plainText, targetLang);
       return rewrapInParagraphs(text, translated);
     } else {
-      return await callLibreTranslate(text, targetLang);
+      return await callTranslateApi(text, targetLang);
     }
   } catch {
-    // Fallback: return original text if all translation attempts fail
     return text;
   }
 }
 
 /**
- * Call LibreTranslate API.
- * Tries the primary instance first, then falls back to public mirrors.
+ * Tries MyMemory first (free, reliable from cloud IPs), then Google fallbacks.
  */
-async function callLibreTranslate(text, targetLang) {
-  const urls = [LIBRE_URL, ...FALLBACK_URLS];
-  let lastError;
+async function callTranslateApi(text, targetLang) {
+  // 1. MyMemory — free, no key, works from Vercel
+  try {
+    return await translateViaMyMemory(text, targetLang);
+  } catch { /* fall through */ }
 
-  for (const baseUrl of urls) {
-    try {
-      const body = {
-        q: text,
-        source: 'auto',
-        target: targetLang,
-        format: 'text',
-      };
-      // Only include api_key if set (public mirrors don't require it)
-      if (LIBRE_KEY && baseUrl === LIBRE_URL) body.api_key = LIBRE_KEY;
+  // 2. Google gtx fallback
+  try {
+    return await translateViaGtx(text, targetLang);
+  } catch { /* fall through */ }
 
-      const res = await fetch(`${baseUrl}/translate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: AbortSignal.timeout(15000),
-      });
-
-      if (!res.ok) {
-        const errText = await res.text().catch(() => res.status);
-        throw new Error(`LibreTranslate ${baseUrl} returned ${res.status}: ${errText}`);
-      }
-
-      const data = await res.json();
-      if (!data.translatedText) throw new Error('Empty response from LibreTranslate');
-      return data.translatedText;
-    } catch (err) {
-      console.warn(`[translate] ${baseUrl} failed:`, err.message);
-      lastError = err;
-    }
+  // 3. Google dict-chrome-ex fallback
+  try {
+    return await translateViaDictChrome(text, targetLang);
+  } catch {
+    return text;
   }
-
-  throw lastError;
 }
 
-/**
- * Strip HTML tags to plain text, preserving paragraph breaks.
- */
+async function translateViaMyMemory(text, targetLang) {
+  // MyMemory uses ISO codes: Kurdish Sorani = 'ku', English = 'en'
+  const langPair = `ku|${targetLang}`;
+  const params = new URLSearchParams({ q: text, langpair: langPair });
+  const url = `https://api.mymemory.translated.net/get?${params}`;
+
+  const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (!res.ok) throw new Error(`MyMemory returned ${res.status}`);
+
+  const data = await res.json();
+  if (data.responseStatus !== 200) throw new Error(`MyMemory error: ${data.responseStatus}`);
+
+  const result = data.responseData?.translatedText;
+  if (!result || result === text) throw new Error('MyMemory returned no translation');
+
+  return result;
+}
+
+async function translateViaGtx(text, targetLang) {
+  const params = new URLSearchParams({ client: 'gtx', sl: 'auto', tl: targetLang, dt: 't', q: text });
+  const res = await fetch(`https://translate.googleapis.com/translate_a/single?${params}`, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36' },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`gtx returned ${res.status}`);
+  const data = await res.json();
+  const result = data[0]?.map((s) => s?.[0] ?? '').join('');
+  if (!result) throw new Error('empty result');
+  return result;
+}
+
+async function translateViaDictChrome(text, targetLang) {
+  const params = new URLSearchParams({ client: 'dict-chrome-ex', sl: 'auto', tl: targetLang, dt: 't', q: text });
+  const res = await fetch(`https://translate.googleapis.com/translate_a/single?${params}`, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36' },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`dict-chrome-ex returned ${res.status}`);
+  const data = await res.json();
+  const result = data[0]?.map((s) => s?.[0] ?? '').join('');
+  if (!result) throw new Error('empty result');
+  return result;
+}
+
 function stripHtml(html) {
   return html
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n').replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"')
     .trim();
 }
 
-/**
- * Re-wrap translated plain text into <p> tags matching the original structure.
- */
 function rewrapInParagraphs(originalHtml, translatedText) {
   const pCount = (originalHtml.match(/<p[^>]*>/gi) || []).length;
+  if (pCount <= 1) return `<p>${translatedText.trim()}</p>`;
 
-  if (pCount <= 1) {
-    return `<p>${translatedText.trim()}</p>`;
-  }
-
-  const paragraphs = translatedText
-    .split(/\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-
+  const paragraphs = translatedText.split(/\n+/).map((p) => p.trim()).filter(Boolean);
   if (paragraphs.length === 0) return `<p>${translatedText.trim()}</p>`;
-
   return paragraphs.map((p) => `<p>${p}</p>`).join('\n');
 }
+
 
