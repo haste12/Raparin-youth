@@ -67,8 +67,50 @@ async function translateText(text, targetLang, sourceLang) {
 
 /**
  * Core Google Translate API call.
+ * Tries two endpoints: the mobile/m endpoint (reliable from cloud IPs) first,
+ * then falls back to the gtx JSON endpoint.
  */
 async function callGoogleTranslateApi(text, targetLang, sourceLang) {
+  // Try the mobile endpoint first — it works reliably from cloud/Vercel IPs
+  try {
+    return await translateViaMobile(text, targetLang, sourceLang);
+  } catch {
+    // Fall back to gtx JSON endpoint
+    return await translateViaGtx(text, targetLang, sourceLang);
+  }
+}
+
+async function translateViaMobile(text, targetLang, sourceLang) {
+  const params = new URLSearchParams({
+    sl: sourceLang === 'auto' ? 'auto' : sourceLang,
+    tl: targetLang,
+    q: text,
+  });
+  const url = `https://translate.google.com/m?${params}`;
+
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent':
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    },
+    signal: AbortSignal.timeout(10000),
+  });
+
+  if (!res.ok) throw new Error(`Mobile translate returned ${res.status}`);
+
+  const html = await res.text();
+  const match = html.match(/<div class="result-container">([\s\S]*?)<\/div>/);
+  if (!match) throw new Error('Could not parse mobile translate response');
+
+  return match[1]
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+async function translateViaGtx(text, targetLang, sourceLang) {
   const params = new URLSearchParams({
     client: 'gtx',
     sl: sourceLang,
@@ -76,7 +118,6 @@ async function callGoogleTranslateApi(text, targetLang, sourceLang) {
     dt: 't',
     q: text,
   });
-
   const url = `https://translate.googleapis.com/translate_a/single?${params}`;
 
   const res = await fetch(url, {
@@ -84,21 +125,13 @@ async function callGoogleTranslateApi(text, targetLang, sourceLang) {
       'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36',
     },
-    // 8 second timeout
     signal: AbortSignal.timeout(8000),
   });
 
-  if (!res.ok) {
-    throw new Error(`Google Translate returned ${res.status}`);
-  }
+  if (!res.ok) throw new Error(`Google Translate returned ${res.status}`);
 
   const data = await res.json();
-  // Response format: [ [ ["translated","original",...], ...], ... ]
-  const translated = data[0]
-    ?.map((segment) => segment?.[0] ?? '')
-    .join('') ?? text;
-
-  return translated;
+  return data[0]?.map((segment) => segment?.[0] ?? '').join('') ?? text;
 }
 
 /**
