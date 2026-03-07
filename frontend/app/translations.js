@@ -155,9 +155,9 @@ const translations = {
     // Hero
     hero: {
       badge: 'دامەزراوە لە ٢٠٢٢',
-      title: 'بەهێزکردنی',
-      titleHighlight: 'گەنجان',
-      titleEnd: 'لە ڕاپەڕین',
+      title: 'ئەمڕۆ ڕابەرانی',
+      titleHighlight: 'سبەی',
+      titleEnd: 'دروست دەکەین',
       goals: [
         'پەروەردەکردن',
         'هۆشیارکردنەوە و پەرەپێدانی لێهاتووی',

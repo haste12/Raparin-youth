@@ -64,7 +64,6 @@ export default function HeroSection() {
 
   const stats = [
     { number: '3', label: t.hero.stats.years },
-    { number: '15+', label: t.hero.stats.partners },
   ];
 
   return (
