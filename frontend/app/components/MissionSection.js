@@ -15,7 +15,7 @@ export default function MissionSection() {
               setTimeout(() => {
                 el.style.opacity = '1';
                 el.style.transform = 'translateY(0)';
-              }, i * 100);
+              }, i * 150);
             });
           }
         });
@@ -25,16 +25,6 @@ export default function MissionSection() {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const goals = [
-    t.about.values.goal1,
-    t.about.values.goal2,
-    t.about.values.goal3,
-    t.about.values.goal4,
-    t.about.values.goal5,
-  ];
-
-  const kuNumbers = ['١', '٢', '٣', '٤', '٥'];
 
   return (
     <section
@@ -52,70 +42,90 @@ export default function MissionSection() {
       <div style={{ position: 'absolute', top: '-80px', left: isRTL ? 'auto' : '-80px', right: isRTL ? '-80px' : 'auto', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle,rgba(51,170,255,0.08) 0%,transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '-60px', right: isRTL ? 'auto' : '-60px', left: isRTL ? '-60px' : 'auto', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle,rgba(107,91,229,0.08) 0%,transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
 
-      <div className="container">
-        {/* Header */}
-        <div
-          className="mission-animate"
-          style={{
-            opacity: 0,
-            transform: 'translateY(24px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
-            textAlign: 'center',
-            marginBottom: '60px',
-          }}
-        >
-          <span className="section-tag">{isRTL ? 'ئەرکمان' : 'Our Mission'}</span>
-          <h2 className="section-title" style={{ color: 'var(--color-text)' }}>
-            {isRTL ? 'ئامانجەکانمان' : 'What We Stand For'}
-          </h2>
-          <p className="section-description">
-            {isRTL
-              ? 'ئێمە بەرپرسیارێتی خۆمان پێ دەبەین بۆ گەیشتن بە ئامانجەکانی خوارەوە لە خزمەتی گەنجانی ڕاپەڕین'
-              : 'We are committed to achieving the following goals in service of the youth of Raparin'}
-          </p>
+      <div className="container" dir={isRTL ? 'rtl' : 'ltr'}>
+        
+        {/* Mission Section */}
+        <div className="mission-animate" style={{ marginBottom: '80px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
+          <div style={{ 
+            background: 'var(--color-surface)', 
+            border: '1px solid var(--color-surface-b)', 
+            borderRadius: '24px', 
+            padding: '40px', 
+            boxShadow: 'var(--shadow-card)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ position: 'absolute', top: 0, right: isRTL ? 0 : 'auto', left: isRTL ? 'auto' : 0, width: '4px', height: '100%', background: 'var(--blue-primary)' }} />
+            <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '20px', textAlign: isRTL ? 'right' : 'left' }}>
+              {t.about.mission.title}
+            </h2>
+            <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '24px', textAlign: isRTL ? 'right' : 'left' }}>
+              {t.about.mission.desc}
+            </p>
+            <h4 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '16px', textAlign: isRTL ? 'right' : 'left' }}>
+              {t.about.mission.pointsTitle}
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+              {t.about.mission.points.map((point, index) => (
+                <div key={index} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <span style={{ color: 'var(--blue-primary)', marginTop: '2px', fontSize: '18px' }}>•</span>
+                  <p style={{ margin: 0, fontSize: '15px', lineHeight: 1.6, color: 'var(--color-text)' }}>{point}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Two-column layout — goals left, big number accent right (Kurdish: reversed) */}
-        <div
-          className="mission-animate"
-          dir={isRTL ? 'rtl' : 'ltr'}
-          style={{
-            opacity: 0,
-            transform: 'translateY(24px)',
-            transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
+        {/* Vision Section */}
+        <div className="mission-animate" style={{ marginBottom: '80px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
+          <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+            <span style={{ fontSize: '48px', display: 'block', marginBottom: '16px' }}>👁️</span>
+            <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '24px' }}>
+              {t.about.vision.title}
+            </h2>
+            <p style={{ fontSize: '17px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '16px' }}>
+              {t.about.vision.desc1}
+            </p>
+            <p style={{ fontSize: '17px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '16px' }}>
+              {t.about.vision.desc2}
+            </p>
+            <h3 style={{ fontSize: '18px', lineHeight: 1.8, marginBottom: '16px', fontWeight: 700, color: 'var(--blue-primary)' }}>
+              {t.about.vision.desc3}
+            </h3>
+          </div>
+        </div>
+
+        {/* Values Section */}
+        <div className="mission-animate" style={{ opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '12px' }}>
+              {t.about.guidingValues.title}
+            </h2>
+            <p style={{ fontSize: '16px', color: 'var(--color-text)', maxWidth: '600px', margin: '0 auto' }}>
+              {t.about.guidingValues.desc}
+            </p>
+          </div>
+
+          <div style={{
             display: 'grid',
-            gridTemplateColumns: '1fr auto',
-            gap: '60px',
-            alignItems: 'center',
-            maxWidth: '900px',
-            margin: '0 auto',
-          }}
-        >
-          {/* Goal list */}
-          <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {goals.map((goal, i) => (
-              <li
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '24px'
+          }}>
+            {t.about.guidingValues.points.map((val, i) => (
+              <div
                 key={i}
-                className="mission-animate"
-                id={`mission-goal-${i + 1}`}
                 style={{
-                  opacity: 0,
-                  transform: 'translateY(16px)',
-                  transition: `opacity 0.5s ease ${0.2 + i * 0.1}s, transform 0.5s ease ${0.2 + i * 0.1}s`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '20px',
-                  padding: '18px 24px',
                   background: 'var(--color-surface)',
                   border: '1px solid var(--color-surface-b)',
                   borderRadius: '16px',
+                  padding: '24px',
                   boxShadow: 'var(--shadow-card)',
                   transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  cursor: 'default',
+                  textAlign: isRTL ? 'right' : 'left'
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateX(' + (isRTL ? '4px' : '-4px') + ')';
-                  e.currentTarget.style.boxShadow = '0 8px 28px rgba(51,170,255,0.12)';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(51,170,255,0.1)';
                   e.currentTarget.style.borderColor = 'rgba(51,170,255,0.3)';
                 }}
                 onMouseLeave={e => {
@@ -124,77 +134,17 @@ export default function MissionSection() {
                   e.currentTarget.style.borderColor = 'var(--color-surface-b)';
                 }}
               >
-                {/* Number */}
-                <span style={{
-                  fontSize: '15px',
-                  fontWeight: 900,
-                  color: 'var(--blue-primary)',
-                  minWidth: '32px',
-                  height: '32px',
-                  borderRadius: '10px',
-                  background: 'rgba(51,170,255,0.1)',
-                  border: '1px solid rgba(51,170,255,0.25)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  {isRTL ? kuNumbers[i] : i + 1}
-                </span>
-
-                {/* Text */}
-                <span style={{
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  color: 'var(--color-text)',
-                  lineHeight: 1.5,
-                  textAlign: isRTL ? 'right' : 'left',
-                }}>
-                  {goal?.title}
-                </span>
-              </li>
+                <h4 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--blue-light)', marginBottom: '12px' }}>
+                  {val.title}
+                </h4>
+                <p style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--color-text)', margin: 0 }}>
+                  {val.desc}
+                </p>
+              </div>
             ))}
-          </ol>
-
-          {/* Decorative large calligraphic number accent */}
-          <div
-            className="mission-animate"
-            style={{
-              opacity: 0,
-              transform: 'translateY(24px)',
-              transition: 'opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            <div style={{
-              fontSize: 'clamp(80px, 12vw, 140px)',
-              fontWeight: 900,
-              lineHeight: 1,
-              background: 'var(--gradient-primary)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              opacity: 0.25,
-              userSelect: 'none',
-              fontFamily: 'serif',
-            }}>
-              {isRTL ? '٥' : '5'}
-            </div>
-            <div style={{
-              fontSize: '12px',
-              fontWeight: 700,
-              color: 'var(--color-text-muted)',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              textAlign: 'center',
-            }}>
-              {isRTL ? 'ئامانج' : 'Goals'}
-            </div>
           </div>
         </div>
+
       </div>
     </section>
   );

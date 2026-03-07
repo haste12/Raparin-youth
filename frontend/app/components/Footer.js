@@ -131,13 +131,15 @@ export default function Footer() {
         {/* Divider */}
         <div style={{ height: '1px', background: 'var(--color-footer-b)', margin: '0 0 24px' }} />
 
-        {/* Bottom bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }} dir={isRTL ? 'rtl' : 'ltr'}>
-          <span style={{ fontSize: '13px', color: 'var(--color-footer-text)' }}>{t.footer.copyright}</span>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <a style={{ fontSize: '13px', color: 'var(--color-footer-link)', cursor: 'pointer', textDecoration: 'none' }}>{t.footer.privacy}</a>
-            <a style={{ fontSize: '13px', color: 'var(--color-footer-link)', cursor: 'pointer', textDecoration: 'none' }}>{t.footer.terms}</a>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '12px' }} dir={isRTL ? 'rtl' : 'ltr'}>
+          <span style={{ fontSize: '13px', color: 'var(--color-footer-text)', textAlign: 'center' }}>
+            {t.footer.copyright}
+            <br />
+            {isRTL ? 'دروستکراوە لە لایەن :' : 'Created by : '}
+            <a href="https://hastemuhsin.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-footer-link)', textDecoration: 'none', fontWeight: 'bold' }}>
+              Haste mohsin
+            </a>
+          </span>
         </div>
       </div>
     </footer>

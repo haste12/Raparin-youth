@@ -42,12 +42,38 @@ const translations = {
       text3: 'Our programs include trainings, workshops, and various activities in the fields of leadership, education, culture, and the environment. Through these initiatives, we aim to inspire young people to become the leaders of tomorrow and to create a positive impact in their communities.',
       text4: 'We also work to increase opportunities for girls and women, supporting their participation and strengthening their role in social and economic development.',
       text5: 'We believe that investing in youth and supporting their potential is the foundation for sustainable development and stability in society.',
-      values: {
-        goal1: { title: 'Education', desc: 'Providing quality educational opportunities to empower youth' },
-        goal2: { title: 'Awareness & Skills Development', desc: 'Raising awareness and building professional skills among young people' },
-        goal3: { title: 'Empowering Youth', desc: 'Empowering youth for a brighter and more prosperous future' },
-        goal4: { title: 'Building a Strong Community', desc: 'Creating a strong community through human development' },
-        goal5: { title: 'Opening Learning Courses', desc: 'Opening courses and training programs to support continuous learning' },
+      mission: {
+        title: 'Mission',
+        desc: 'The mission of Raparin Youth Organization is to empower young people and develop their skills and abilities so that they can actively contribute to the growth and development of society. Through education, training, and community programs, we encourage youth to learn, grow, and participate in serving their communities. We also strive to strengthen the spirit of volunteerism and selfless service among young people so they can become a positive force for change.',
+        pointsTitle: 'To achieve this mission, we aim to:',
+        points: [
+          'Develop the skills and capacities of young people in different fields.',
+          'Organize training courses and workshops that support personal and professional development.',
+          'Encourage youth to participate in volunteer work and community service.',
+          'Create opportunities for cooperation and teamwork among young people.',
+          'Support the participation of girls and women in social and professional fields.',
+          'Raise awareness about social, environmental, and cultural issues.',
+          'Raise awareness about the risks of irregular migration and help young people find better opportunities within their communities.',
+          'Work to reduce drug abuse and raise awareness about its negative effects on youth and society.'
+        ]
+      },
+      vision: {
+        title: 'Vision',
+        desc1: 'Our vision is to build a society where young people are confident, capable, and empowered, and where they contribute to building a better future through volunteerism and a strong sense of responsibility.',
+        desc2: 'We also aim to create a society where equal opportunities exist for everyone, and where both girls and boys can equally develop their abilities and play an important role in the growth and progress of their communities.',
+        desc3: 'We aspire to see young people become the leaders of tomorrow, creating positive and sustainable change in their societies.'
+      },
+      guidingValues: {
+        title: 'Values',
+        desc: 'Our work and activities are guided by the following values:',
+        points: [
+          { title: 'Empowerment:', desc: 'Supporting young people to discover and develop their potential.' },
+          { title: 'Volunteerism:', desc: 'Encouraging youth to serve their communities with dedication and without expecting rewards.' },
+          { title: 'Equality:', desc: 'Promoting equal opportunities for everyone, especially for girls and women.' },
+          { title: 'Community Service:', desc: 'Working to improve people’s lives and strengthen communities.' },
+          { title: 'Integrity and Transparency:', desc: 'Committing to honesty, accountability, and transparency in all our work.' },
+          { title: 'Collaboration:', desc: 'Believing in the power of teamwork and partnerships to achieve meaningful change.' }
+        ]
       },
       badgeMembers: '500+ Members',
       badgeActivities: '50+ Activities',
@@ -111,7 +137,7 @@ const translations = {
       description: 'Empowering the youth of Raparin through leadership, education, culture, and community engagement since 2022.',
       quickLinks: 'Quick Links',
       connect: 'Connect',
-      copyright: '© 2024 Raparin Youth Organization. All rights reserved.',
+      copyright: '© 2026 Raparin Youth Organization. All rights reserved.',
       privacy: 'Privacy Policy',
       terms: 'Terms of Use',
     },
@@ -159,15 +185,40 @@ const translations = {
       text3: 'پرۆگرام و چالاکییەکانمان پێکدێن لە ڕاهێنان، وۆرکشۆپ و بەرنامە جۆراوجۆرەکان لە بوارەکانی ڕابەرایەتی، پەروەردە، کەلتوور و ژینگە. لە ڕێگەی ئەم بەرنامانەدا هەوڵ دەدەین گەنجان هاندەربکەین بۆ ئەوەی ببنە ڕابەرانی داهاتوو و کاریگەرییەکی ئەرێنی لە کۆمەڵگاکانیاندا دروست بکەن.',
       text4: 'هەروەها هەوڵ دەدەین دەرفەتی کار و بەشداری بۆ کچان و ژنان زیاتر بکەین، بۆ ئەوەی ڕۆڵێکی کاریگەرتر لە گەشە و پێشکەوتنی کۆمەڵگادا ببینن.',
       text5: 'ئێمە باوەڕمان وایە کە پەرەپێدانی گەنجان و گرنگیدان بە تواناکانیان دەتوانێت بنچینەیەکی بەهێز بۆ پێشکەوتن و سەقامگیری کۆمەڵگا دروست بکات.',
-      values: {
-        goal1: { title: 'پەروەردەکردن', desc: 'دابینکردنی دەرفەتی پەروەردەیی بەکوالیتی بۆ بەهێزکردنی گەنجان' },
-        goal2: { title: 'هۆشیارکردنەوە و پەرەپێدانی لێهاتووی', desc: 'هۆشیارکردنەوە و بینانی شارەزایی پیشەیی لەنێوان گەنجان' },
-        goal3: { title: 'بەهێزکردنی گەنجان بۆ داهاتووییەکی گەشاوەتر', desc: 'بەهێزکردنی گەنجان بۆ داهاتووێکی بەروبەخت و گەشاوەتر' },
-        goal4: { title: 'دروستکردنی کۆمەڵگایەکی بەهێز', desc: 'دروستکردنی کۆمەڵگایەکی بەهێز لە ڕێگەی گەشەپێدانی مرۆییەوە' },
-        goal5: { title: 'بۆ کردنەوەی خولی فێربوون', desc: 'کردنەوەی خول و بەرنامەی پەروەردەیی بۆ پشتگیری فێربوونی بەردەوام' },
+      mission: {
+        title: 'ئامانج (Mission)',
+        desc: 'ئامانجی ڕێکخراوی گەنجانی ڕاپەڕین بەهێزکردنی گەنجان و پەرەپێدانی توانا و لێهاتووییەکانیانە، بۆ ئەوەی بتوانن بەشدارێکی کاریگەر بن لە گەشە و پێشکەوتنی کۆمەڵگادا. ئێمە لە ڕێگەی پەروەردە، ڕاهێنان و بەرنامە کۆمەڵایەتییەکانەوە هەوڵ دەدەین گەنجان هانبدەین بۆ فێربوون، گەشەکردن و بەشداری کردنیان لە خزمەتکردنی کۆمەڵگا. هەروەها هەوڵ دەدەین ڕۆحی خۆبەخشی و کارکردنی بێ پاداشت لە ناو گەنجاندا بەرز بکەینەوە بۆ ئەوەی ببنە هێزێکی ئەرێنی بۆ گۆڕانکاری.',
+        pointsTitle: 'لە پێناو ئەم ئامانجەدا، هەوڵ دەدەین:',
+        points: [
+          'پەرەپێدانی توانا و لێهاتووییەکانی گەنجان لە بوارە جیاوازەکاندا.',
+          'ڕێکخستنی خولی ڕاهێنان و وۆرکشۆپ بۆ گەشەی کەسی و پیشەیی.',
+          'هاندانی گەنجان بۆ بەشداری کردنیان لە خزمەتگوزاری و کارە خۆبەخشەکان.',
+          'دروستکردنی دەرفەت بۆ هاوکاری و کارکردنی هاوبەش لە ناو گەنجاندا.',
+          'پشتگیری لە بەشداری کچان و ژنان لە بوارە کۆمەڵایەتی و پیشەییەکاندا.',
+          'بەرزکردنەوەی هۆشیاری لەسەر کێشە کۆمەڵایەتی، ژینگەیی و کلتوورییەکان.',
+          'بەرزکردنەوەی هۆشیاری لەسەر مەترسییەکانی کۆچی نایاسایی و یارمەتیدانی گەنجان بۆ دۆزینەوەی دەرفەتی باشتر لە ناو کۆمەڵگاکانیاندا.',
+          'کارکردن بۆ کەمکردنەوەی بەکارهێنانی ماددە هۆشبەرەکان و بەرزکردنەوەی هۆشیاری لەسەر کاریگەرییە نەرێنییەکانیان لەسەر گەنجان و کۆمەڵگا.'
+        ]
       },
-      badgeMembers: '+١٠٠ ئەندام',
-      badgeActivities: '+١٢ چالاکی',
+      vision: {
+        title: 'دیدگا (Vision)',
+        desc1: 'دیدگای ئێمە دروستکردنی کۆمەڵگایەکە کە تێیدا گەنجان بەهێز، دڵنیا و لێهاتووبن، و بە ڕۆحی خۆبەخشی و هەستکردن بە بەرپرسیارێتی بەشداری لە دروستکردنی داهاتوویەکی باشتردا بکەن.',
+        desc2: 'هەروەها ئامانجمان ئەوەیە کۆمەڵگایەک دروست بکەین کە تێیدا یەکسانی دەرفەت هەبێت و کچان و کوڕان هەردووک بتوانن بە دەرفەتی یەکسان توانا و لێهاتووییەکانیان پەرە پێبدەن و ڕۆڵێکی گرنگ لە گەشە و پێشکەوتنی کۆمەڵگادا بگێڕن.',
+        desc3: 'دەمانەوێت گەنجان ببنە ڕابەرانی داهاتوو کە بتوانن گۆڕانکارییەکی ئەرێنی و بەردەوام لە کۆمەڵگاکانیاندا دروست بکەن.'
+      },
+      guidingValues: {
+        title: 'بەهاکان (Values)',
+        desc: 'کار و چاڵاکییەکانمان لەسەر ئەم بەهایانە بنیاتنراون:',
+        points: [
+          { title: 'بەهێزکردن:', desc: 'پشتگیری لە گەنجان بۆ دۆزینەوە و پەرەپێدانی تواناکانیان.' },
+          { title: 'ڕۆحی خۆبەخشی:', desc: 'هاندانی گەنجان بۆ کارکردن بۆ کۆمەڵگا بە دڵسۆزی و بێ چاوەڕوانی پاداشت.' },
+          { title: 'یەکسانی:', desc: 'دابینکردنی دەرفەتی یەکسان بۆ هەمووان، بە تایبەتی بۆ کچان و ژنان.' },
+          { title: 'خزمەتگوزاری کۆمەڵگا:', desc: 'کارکردن بۆ باشترکردنی ژیانی خەڵک و گەشەی کۆمەڵگا.' },
+          { title: 'ڕاستگۆیی و شەفافیەت:', desc: 'پابەندبوون بە ڕاستگۆیی، شەفافیەت و بەرپرسیارێتی لە هەموو کارەکاندا.' },
+          { title: 'هاوکاری:', desc: 'باوەڕمان بە هێزی هاوکاری و کارکردنی هاوبەش هەیە بۆ گەیشتن بە گۆڕانکارییەکی کاریگەر.' }
+        ]
+      },
+
     },
 
     // Activities
@@ -228,7 +279,7 @@ const translations = {
       description: 'بەهێزکردنی گەنجانی ڕاپەڕین لە ڕێگەی ڕابەرایەتی، پەروەردە، کەلتوور، و بەشداری کۆمەڵگاوی لە ساڵی ٢٠٢٢.',
       quickLinks: 'بەستەرە خێراکان',
       connect: 'پەیوەندی',
-      copyright: '© ٢٠٢٤ ڕێکخراوی گەنجانی ڕاپەڕین. هەموو مافەکان پارێزراون.',
+      copyright: '© ٢٠٢٦ ڕێکخراوی گەنجانی ڕاپەڕین. هەموو مافەکان پارێزراون.',
       privacy: 'پۆلیسی تایبەتمەندی',
       terms: 'مەرجەکانی بەکارهێنان',
     },
