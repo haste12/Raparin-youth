@@ -1,0 +1,11 @@
+{
+  "name": "raparin-youth-org",
+  "version": "1.0.0",
+  "description": "Raparin Youth Organization Website - Next.js + Express.js",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && node index.js",
+    "install:all": "cd frontend && npm install && cd ../backend && npm install"
+  },
+  "private": true
+}
