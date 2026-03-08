@@ -76,7 +76,7 @@ export default function ContactSection() {
         </div>
 
         {/* 3-col Info Cards */}
-        <div className="contact-animate" style={{
+        <div className="contact-animate contact-info-grid" style={{
           opacity:0, transform:'translateY(20px)',
           transition:'opacity 0.7s ease 0.15s,transform 0.7s ease 0.15s',
           display:'grid',
@@ -165,11 +165,14 @@ export default function ContactSection() {
         {/* Responsive override */}
         <style>{`
           @media (max-width: 768px) {
-            .contact-info-grid { grid-template-columns: 1fr !important; }
-            .contact-social-grid { grid-template-columns: repeat(3,1fr) !important; }
+            .contact-info-grid { grid-template-columns: 1fr 1fr !important; }
           }
-          @media (max-width: 540px) {
-            .contact-cols { grid-template-columns: 1fr !important; }
+          @media (max-width: 480px) {
+            .contact-info-grid { grid-template-columns: 1fr !important; }
+          }
+          .contact-detail-value {
+            word-break: break-word;
+            overflow-wrap: break-word;
           }
         `}</style>
       </div>

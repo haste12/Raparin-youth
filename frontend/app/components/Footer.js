@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useLanguage } from '../LanguageContext';
 
 export default function Footer() {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, lang } = useLanguage();
 
   const quickLinks = [
     { href: '/', label: t.nav.home },
@@ -27,10 +27,10 @@ export default function Footer() {
               <img src="/logo.png" alt="Raparin Youth Organization" />
               <div>
                 <div className="footer-logo-title">
-                  {isRTL ? 'ڕێکخراوی گەنجانی ڕاپەڕین' : 'Raparin Youth Organization'}
+                  {lang === 'ku' ? 'ڕێکخراوی گەنجانی ڕاپەڕین' : lang === 'ar' ? 'منظمة شباب رابارين' : 'Raparin Youth Organization'}
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--color-footer-text)', marginTop: '2px' }}>
-                  {isRTL ? 'دامەزراوە ٢٠٢٢' : 'Est. 2022'}
+                  {lang === 'ku' ? 'دامەزراوە ٢٠٢٢' : lang === 'ar' ? 'تأسست ٢٠٢٢' : 'Est. 2022'}
                 </div>
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function Footer() {
               </li>
               <li>
                 <span style={{ fontSize: '14px', color: 'var(--color-footer-text)', lineHeight: 1.5 }}>
-                  {isRTL ? 'قەلاّدزێ / سەروو هۆتێل سەردەشت' : 'Qaladze / Above Sardasht Hotel'}
+                  {lang === 'ku' ? 'قەلاّدزێ / سەروو هۆتێل سەردەشت' : lang === 'ar' ? 'قلادزي / فوق فندق سردشت' : 'Qaladze / Above Sardasht Hotel'}
                 </span>
               </li>
             </ul>
@@ -135,7 +135,7 @@ export default function Footer() {
           <span style={{ fontSize: '13px', color: 'var(--color-footer-text)', textAlign: 'center' }}>
             {t.footer.copyright}
             <br />
-            {isRTL ? 'دروستکراوە لە لایەن :' : 'Created by : '}
+            {lang === 'ku' ? 'دروستکراوە لە لایەن :' : lang === 'ar' ? 'أنشأ بواسطة : ' : 'Created by : '}
             <a href="https://hastemuhsin.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-footer-link)', textDecoration: 'none', fontWeight: 'bold' }}>
               Haste mohsin
             </a>

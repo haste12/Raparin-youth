@@ -4,28 +4,33 @@ import translations from './translations';
 
 const LanguageContext = createContext(null);
 
+const VALID_LANGS = ['en', 'ku', 'ar'];
+const RTL_LANGS = ['ku', 'ar'];
+
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState('en');
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     const raw = localStorage.getItem('raparin-lang');
-    const savedLang = raw === 'ku' ? 'ku' : 'en';
+    const savedLang = VALID_LANGS.includes(raw) ? raw : 'en';
     const savedTheme = localStorage.getItem('raparin-theme') || 'light';
     if (raw && raw !== savedLang) localStorage.setItem('raparin-lang', savedLang);
     setLang(savedLang);
     setTheme(savedTheme);
-    document.documentElement.dir = savedLang === 'ku' ? 'rtl' : 'ltr';
-    document.documentElement.lang = savedLang === 'ku' ? 'ckb' : 'en';
+    const rtl = RTL_LANGS.includes(savedLang);
+    document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+    document.documentElement.lang = savedLang === 'ku' ? 'ckb' : savedLang;
     document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
 
   const switchLang = (newLang) => {
-    const validLang = newLang === 'ku' ? 'ku' : 'en';
+    const validLang = VALID_LANGS.includes(newLang) ? newLang : 'en';
     setLang(validLang);
     localStorage.setItem('raparin-lang', validLang);
-    document.documentElement.dir = validLang === 'ku' ? 'rtl' : 'ltr';
-    document.documentElement.lang = validLang === 'ku' ? 'ckb' : 'en';
+    const rtl = RTL_LANGS.includes(validLang);
+    document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+    document.documentElement.lang = validLang === 'ku' ? 'ckb' : validLang;
   };
 
   const toggleTheme = () => {
@@ -36,7 +41,7 @@ export function LanguageProvider({ children }) {
   };
 
   const t = translations[lang];
-  const isRTL = lang === 'ku';
+  const isRTL = RTL_LANGS.includes(lang);
   const isDark = theme === 'dark';
 
   return (

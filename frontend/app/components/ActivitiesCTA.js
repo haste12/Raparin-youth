@@ -45,7 +45,7 @@ function StatCard({ target, suffix = '', label, started, duration }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function ActivitiesCTA() {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, lang } = useLanguage();
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [activityCount, setActivityCount] = useState(null); // null = loading
@@ -91,6 +91,7 @@ export default function ActivitiesCTA() {
       suffix: activityCount !== null && activityCount > 0 ? '+' : '',
       labelEn: 'Activities',
       labelKu: 'چالاکی',
+      labelAr: 'نشاط',
       duration: 1000,
     },
     {
@@ -98,6 +99,7 @@ export default function ActivitiesCTA() {
       suffix: '',
       labelEn: 'Established',
       labelKu: 'دامەزراوە',
+      labelAr: 'تأسست',
       duration: 1800,
     },
   ];
@@ -134,7 +136,7 @@ export default function ActivitiesCTA() {
               key={i}
               target={s.target}
               suffix={s.suffix}
-              label={isRTL ? s.labelKu : s.labelEn}
+              label={lang === 'ku' ? s.labelKu : lang === 'ar' ? s.labelAr : s.labelEn}
               started={visible && (s.target > 0 || s.target === 2022)}
               duration={s.duration}
             />
@@ -152,13 +154,17 @@ export default function ActivitiesCTA() {
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <p className="acta-cta-eyebrow">
-              {isRTL
+              {lang === 'ku'
                 ? `${activityCount ?? '...'} چالاکی تا ئێستا`
+                : lang === 'ar'
+                ? `${activityCount ?? '...'} نشاط وما زال العدد يزداد`
                 : `${activityCount ?? '...'} Activities & Counting`}
             </p>
             <p className="acta-cta-headline">
-              {isRTL
+              {lang === 'ku'
                 ? 'هەموو چالاکییەکانمان، وۆرکشۆپەکان، و بەرنامەکانمان لە یەک شوێن دا ببینە'
+                : lang === 'ar'
+                ? 'استكشف جميع فعالياتنا وورش العمل والبرامج في مكان واحد'
                 : 'Explore all our events, workshops, and programs in one place'}
             </p>
           </div>
@@ -176,7 +182,7 @@ export default function ActivitiesCTA() {
               e.currentTarget.style.boxShadow = '0 4px 20px rgba(51,170,255,0.4)';
             }}
           >
-            <span>{isRTL ? 'چالاکییەکانمان ببینە' : 'See Our Activities'}</span>
+            <span>{lang === 'ku' ? 'چالاکییەکانمان ببینە' : lang === 'ar' ? 'شاهد أنشطتنا' : 'See Our Activities'}</span>
             <span style={{ fontSize: '18px' }}>{isRTL ? '←' : '→'}</span>
           </Link>
         </div>

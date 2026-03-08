@@ -82,6 +82,9 @@ export default function ActivitiesSection() {
     if (lang === 'ku') {
       return date.toLocaleDateString('ar-IQ', { year: 'numeric', month: 'long', day: 'numeric' });
     }
+    if (lang === 'ar') {
+      return date.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
@@ -124,7 +127,7 @@ export default function ActivitiesSection() {
           <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 0', gap: '12px', alignItems: 'center' }}>
             <div className="spinner" />
             <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px' }}>
-              {isRTL ? 'بارکردن...' : 'Loading...'}
+              {lang === 'ku' ? 'بارکردن...' : lang === 'ar' ? 'جاري التحميل...' : 'Loading...'}
             </span>
           </div>
         ) : filtered.length === 0 ? (

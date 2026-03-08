@@ -14,6 +14,9 @@ function formatDate(dateStr, lang) {
   if (lang === 'ku') {
     return `${date.getDate()}ی ${KU_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
   }
+  if (lang === 'ar') {
+    return date.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
@@ -35,11 +38,11 @@ function Lightbox({ src, onClose }) {
 }
 
 export default function ActivityDetailClient({ activity }) {
-  const { lang, isRTL } = useLanguage();
+  const { lang, isRTL, t } = useLanguage();
   const [lightbox, setLightbox] = useState(null);
 
   // Wrap single activity in array for the shared translation hook
-  const { translatedActivities, isTranslating } = useActivityTranslation([activity]);
+  const { translatedActivities } = useActivityTranslation([activity]);
   const translated = translatedActivities[0];
 
   const title = lang === 'ku'
@@ -66,9 +69,9 @@ export default function ActivityDetailClient({ activity }) {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           {/* Breadcrumb */}
           <div dir={isRTL ? 'rtl' : 'ltr'} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '28px', fontSize: '14px', color: 'rgba(255,255,255,0.5)' }}>
-            <Link href="/" style={{ color: '#33AAFF', textDecoration: 'none' }}>{isRTL ? 'سەرەکی' : 'Home'}</Link>
+            <Link href="/" style={{ color: '#33AAFF', textDecoration: 'none' }}>{t.nav.home}</Link>
             <span>{isRTL ? '←' : '→'}</span>
-            <Link href="/activities" style={{ color: '#33AAFF', textDecoration: 'none' }}>{isRTL ? 'چالاکییەکان' : 'Activities'}</Link>
+            <Link href="/activities" style={{ color: '#33AAFF', textDecoration: 'none' }}>{t.nav.activities}</Link>
             <span>{isRTL ? '←' : '→'}</span>
             <span style={{ color: 'rgba(255,255,255,0.8)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{title}</span>
           </div>
@@ -79,12 +82,6 @@ export default function ActivityDetailClient({ activity }) {
 
           <h1 dir={isRTL ? 'rtl' : 'ltr'} style={{ color: '#fff', fontSize: 'clamp(26px, 4vw, 52px)', fontWeight: 800, lineHeight: 1.2, margin: '0 0 16px', textAlign: isRTL ? 'right' : 'left' }}>
             {title}
-            {isTranslating && !isRTL && (
-              <span style={{ display: 'inline-flex', verticalAlign: 'middle', alignItems: 'center', gap: '5px', fontSize: '13px', color: 'rgba(51,170,255,0.8)', fontWeight: 400, marginLeft: '12px' }}>
-                <span className="detail-spinner" />
-                Translating…
-              </span>
-            )}
           </h1>
         </div>
       </div>
@@ -124,7 +121,7 @@ export default function ActivityDetailClient({ activity }) {
             {(activity.images || []).length > 0 && (
               <div style={{ marginTop: '48px' }}>
                 <h2 style={{ color: 'var(--color-text)', fontSize: '22px', fontWeight: 700, marginBottom: '24px', paddingBottom: '12px', borderBottom: '2px solid rgba(51,170,255,0.2)', textAlign: isRTL ? 'right' : 'left' }} dir={isRTL ? 'rtl' : 'ltr'}>
-                  {isRTL ? 'وێنەکان' : 'Photo Gallery'}
+                  {lang === 'ku' ? 'وێنەکان' : lang === 'ar' ? 'معرض الصور' : 'Photo Gallery'}
                 </h2>
                 <div className="detail-gallery">
                   {activity.images.map((img, i) => (
@@ -162,7 +159,7 @@ export default function ActivityDetailClient({ activity }) {
             {/* Back button */}
             <div style={{ marginTop: '56px', textAlign: isRTL ? 'right' : 'left' }} dir={isRTL ? 'rtl' : 'ltr'}>
               <Link href="/activities" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#33AAFF', textDecoration: 'none', fontSize: '15px', fontWeight: 600, padding: '12px 24px', border: '1px solid rgba(51,170,255,0.3)', borderRadius: '10px', background: 'rgba(51,170,255,0.05)', transition: 'background 0.2s' }}>
-                {isRTL ? 'بگەڕێوە بۆ چالاکییەکان ←' : '← Back to Activities'}
+                {lang === 'ku' ? 'بگەڕێوە بۆ چالاکییەکان ←' : lang === 'ar' ? 'العودة إلى الأنشطة ←' : '← Back to Activities'}
               </Link>
             </div>
           </div>

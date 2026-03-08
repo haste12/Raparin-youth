@@ -15,6 +15,9 @@ function formatDate(dateStr, lang) {
   if (lang === 'ku') {
     return date.getDate() + 'ی ' + KU_MONTHS[date.getMonth()] + ' ' + date.getFullYear();
   }
+  if (lang === 'ar') {
+    return date.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
@@ -58,7 +61,7 @@ function ActivityImage({ activity }) {
 // which reads them from /data/activities.json
 export default function ActivitiesPageContent({ activities = [] }) {
   const { t, isRTL, lang } = useLanguage();
-  const { translatedActivities, isTranslating } = useActivityTranslation(activities);
+  const { translatedActivities } = useActivityTranslation(activities);
   const gridRef = useRef(null);
 
   useEffect(() => {
@@ -86,10 +89,10 @@ export default function ActivitiesPageContent({ activities = [] }) {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div dir={isRTL ? 'rtl' : 'ltr'} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px', fontSize: '14px', color: 'rgba(255,255,255,0.55)' }}>
             <Link href="/" style={{ color: 'var(--blue-light)', textDecoration: 'none' }}>
-              {isRTL ? 'سەرەکی' : 'Home'}
+              {t.nav.home}
             </Link>
             <span>{isRTL ? '←' : '→'}</span>
-            <span style={{ color: 'rgba(255,255,255,0.8)' }}>{isRTL ? 'چالاکییەکان' : 'Activities'}</span>
+            <span style={{ color: 'rgba(255,255,255,0.8)' }}>{t.nav.activities}</span>
           </div>
 
           <span className="section-tag" style={{ marginBottom: '16px', display: 'inline-block' }}>{t.activities.tag}</span>
@@ -106,15 +109,11 @@ export default function ActivitiesPageContent({ activities = [] }) {
       <section style={{ background: 'var(--color-section-act)', padding: '60px 0 100px', minHeight: '60vh', transition: 'background 0.3s ease' }}>
         <div className="container">
           <p style={{ color: 'var(--color-text-muted)', fontSize: '14px', marginBottom: '32px', textAlign: isRTL ? 'right' : 'left', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {isRTL
+            {lang === 'ku'
               ? `${activities.length} چالاکی`
+              : lang === 'ar'
+              ? `${activities.length} نشاط`
               : `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'}`}
-            {isTranslating && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: 'var(--blue-light)', opacity: 0.7 }}>
-                <span className="translate-spinner" />
-                {isRTL ? 'وەرگێڕانی...' : 'Translating…'}
-              </span>
-            )}
           </p>
 
           <div className="activities-grid" dir={isRTL ? 'rtl' : 'ltr'} ref={gridRef}>

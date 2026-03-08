@@ -18,7 +18,6 @@ function makeRedis() {
  * admin_login  – 5 attempts per 15 minutes per IP  (brute-force guard)
  * upload       – 15 uploads per hour per IP
  * contact      – 5 submissions per hour per IP
- * translate    – 40 requests per minute per IP
  * api          – 120 requests per minute per IP   (general API guard)
  */
 let _limiters = null;
@@ -48,12 +47,6 @@ function getLimiters() {
       prefix: 'rl:contact',
       analytics: false,
     }),
-    translate: new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(40, '1 m'),
-      prefix: 'rl:translate',
-      analytics: false,
-    }),
     api: new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(120, '1 m'),
@@ -76,7 +69,6 @@ export function getLimiterForPath(pathname) {
   if (pathname === '/api/admin/login')     return limiters.admin_login;
   if (pathname.startsWith('/api/upload'))  return limiters.upload;
   if (pathname.startsWith('/api/contact')) return limiters.contact;
-  if (pathname.startsWith('/api/translate')) return limiters.translate;
   if (pathname.startsWith('/api/'))        return limiters.api;
 
   return null;
