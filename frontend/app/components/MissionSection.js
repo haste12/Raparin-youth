@@ -2,6 +2,10 @@
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 
+const TargetIcon = () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
+const EyeIcon = () => <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
+const CheckIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+
 export default function MissionSection() {
   const { t, isRTL } = useLanguage();
   const sectionRef = useRef(null);
@@ -48,7 +52,7 @@ export default function MissionSection() {
         <div className="mission-animate" style={{ marginBottom: '100px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
           <div style={{ textAlign: isRTL ? 'right' : 'left', maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{ fontSize: '38px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', justifyContent: isRTL ? 'flex-end' : 'flex-start' }}>
-              <span style={{ fontSize: '36px' }}>🎯</span> {t.about.mission.title}
+              <span style={{ display: 'flex' }}><TargetIcon /></span> {t.about.mission.title}
             </h2>
             <p style={{ fontSize: '18px', lineHeight: 1.8, color: 'var(--color-text)', marginBottom: '40px' }}>
               {t.about.mission.desc}
@@ -59,7 +63,6 @@ export default function MissionSection() {
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
               {t.about.mission.points.map((point, index) => {
-                const kuNumbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
                 return (
                 <div key={index} style={{ 
                   display: 'flex', 
@@ -68,7 +71,6 @@ export default function MissionSection() {
                   background: 'var(--color-surface)',
                   padding: '24px',
                   borderRadius: '16px',
-                  boxShadow: 'var(--shadow-card)',
                   border: '1px solid var(--color-surface-b)',
                   transition: 'transform 0.3s ease, border-color 0.3s ease',
                 }}
@@ -90,11 +92,9 @@ export default function MissionSection() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: 800,
-                    fontSize: '18px',
                     flexShrink: 0,
                   }}>
-                    {isRTL ? kuNumbers[index] || index + 1 : index + 1}
+                    <CheckIcon />
                   </div>
                   <p style={{ margin: 0, fontSize: '15px', lineHeight: 1.6, color: 'var(--color-text)' }}>{point}</p>
                 </div>
@@ -106,7 +106,7 @@ export default function MissionSection() {
         {/* Vision Section */}
         <div className="mission-animate" style={{ marginBottom: '80px', opacity: 0, transform: 'translateY(24px)', transition: 'opacity 0.7s ease, transform 0.7s ease' }}>
           <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-            <span style={{ fontSize: '48px', display: 'block', marginBottom: '16px' }}>👁️</span>
+            <span style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}><EyeIcon /></span>
             <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--color-heading)', marginBottom: '24px' }}>
               {t.about.vision.title}
             </h2>
@@ -146,18 +146,15 @@ export default function MissionSection() {
                   border: '1px solid var(--color-surface-b)',
                   borderRadius: '16px',
                   padding: '24px',
-                  boxShadow: 'var(--shadow-card)',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                  transition: 'transform 0.25s ease',
                   textAlign: isRTL ? 'right' : 'left'
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(51,170,255,0.1)';
                   e.currentTarget.style.borderColor = 'rgba(51,170,255,0.3)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-card)';
                   e.currentTarget.style.borderColor = 'var(--color-surface-b)';
                 }}
               >

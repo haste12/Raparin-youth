@@ -91,8 +91,8 @@ export default function AdminLoginPage() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; }
         body { margin: 0; }
-        input:focus { outline: none; border-color: #0FC2C0 !important; box-shadow: 0 0 0 3px rgba(15,194,192,0.2) !important; }
-        button:hover:not(:disabled) { background: linear-gradient(135deg, #0FC2C0 0%, #0891B2 100%) !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,194,192,0.4) !important; }
+        input:focus { outline: none; border-color: #0FC2C0 !important; }
+        button:hover:not(:disabled) { background: linear-gradient(135deg, #0FC2C0 0%, #0891B2 100%) !important; transform: translateY(-1px); }
         button:active:not(:disabled) { transform: translateY(0); }
       `}</style>
     </div>
@@ -116,7 +116,6 @@ const styles = {
     padding: '48px 40px',
     width: '100%',
     maxWidth: '420px',
-    boxShadow: '0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(15,194,192,0.1)',
     backdropFilter: 'blur(20px)',
   },
   header: {
@@ -173,7 +172,7 @@ const styles = {
     padding: '12px 16px',
     color: '#E2E8F0',
     fontSize: '15px',
-    transition: 'border-color 0.2s, box-shadow 0.2s',
+    transition: 'border-color 0.2s',
     width: '100%',
   },
   error: {
@@ -195,7 +194,6 @@ const styles = {
     fontWeight: 600,
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 4px 14px rgba(51,170,255,0.35)',
     letterSpacing: '0.2px',
   },
   footer: {

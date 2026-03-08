@@ -22,6 +22,15 @@ function formatDate(dateStr, lang) {
 }
 
 // ─── Activity Card Image ──────────────────────────────────────────────────────
+const CalendarIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'translateY(2px)', marginRight: '4px', marginLeft: '4px' }}>
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="16" y1="2" x2="16" y2="6"></line>
+    <line x1="8" y1="2" x2="8" y2="6"></line>
+    <line x1="3" y1="10" x2="21" y2="10"></line>
+  </svg>
+);
+
 function ActivityImage({ activity }) {
   const [imgError, setImgError] = useState(false);
   // Support both legacy `image` field and new `coverImage` field
@@ -129,17 +138,21 @@ export default function ActivitiesPageContent({ activities = [] }) {
 
                 <div className="activity-card-body">
                   <div className="activity-card-date">
-                    <span>📅</span>
+                    <CalendarIcon />
                     {formatDate(activity.date, lang)}
                   </div>
                   <h2 className="activity-card-title">
                     {lang === 'ku'
                       ? (activity.titleKu || activity.titleEn)
-                      : (activity.titleEn || activity.titleKu)}
+                      : lang === 'ar'
+                      ? activity.titleAr
+                      : activity.titleEn}
                   </h2>
                   <p className="activity-card-desc">
                     {lang === 'ku'
                       ? (activity.shortDescKu || activity.shortDescEn || activity.descriptionEn)
+                      : lang === 'ar'
+                      ? (activity.shortDescAr || activity.shortDescKu || activity.descriptionEn)
                       : (activity.shortDescEn || activity.shortDescKu || activity.descriptionEn)}
                   </p>
                 </div>

@@ -175,11 +175,9 @@ export default function ActivitiesCTA() {
             className="acta-cta-btn"
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-3px)';
-              e.currentTarget.style.boxShadow = '0 10px 35px rgba(51,170,255,0.55)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(51,170,255,0.4)';
             }}
           >
             <span>{lang === 'ku' ? 'چالاکییەکانمان ببینە' : lang === 'ar' ? 'شاهد أنشطتنا' : 'See Our Activities'}</span>
@@ -230,15 +228,13 @@ export default function ActivitiesCTA() {
           border-radius: 20px;
           padding: 28px 44px;
           text-align: center;
-          box-shadow: var(--shadow-card);
           min-width: 150px;
           flex: 1 1 150px;
           max-width: 220px;
-          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          transition: transform 0.25s ease;
         }
         .acta-stat-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(51,170,255,0.18);
         }
         .acta-stat-number {
           font-size: 40px;
@@ -271,7 +267,6 @@ export default function ActivitiesCTA() {
           border: 1px solid var(--color-surface-b);
           border-radius: 24px;
           padding: 36px 44px;
-          box-shadow: var(--shadow-card);
         }
         .acta-cta-eyebrow {
           font-size: 13px;
@@ -300,7 +295,6 @@ export default function ActivitiesCTA() {
           text-decoration: none;
           white-space: nowrap;
           flex-shrink: 0;
-          box-shadow: 0 4px 20px rgba(51,170,255,0.4);
           transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
         }
 

@@ -73,10 +73,10 @@ export default function Navbar({ activeSection }) {
           <Link href="/" className="navbar-logo" aria-label="Raparin Youth Organization – Home">
             <img src="/logo.png" alt="Raparin Youth Organization Logo" />
             <div className="navbar-logo-text">
-              <span className="navbar-logo-title">
+              <span className="navbar-logo-title" suppressHydrationWarning>
                 {lang === 'ku' ? 'ڕێکخراوی گەنجانی ڕاپەڕین' : lang === 'ar' ? 'منظمة شباب رابارين' : 'Raparin Youth'}
               </span>
-              <span className="navbar-logo-subtitle">
+              <span className="navbar-logo-subtitle" suppressHydrationWarning>
                 {lang === 'ku' ? 'دامەزراوە ٢٠٢٢' : lang === 'ar' ? 'تأسست ٢٠٢٢' : 'Organization'}
               </span>
             </div>
@@ -91,6 +91,7 @@ export default function Navbar({ activeSection }) {
                   className={`nav-link ${getActiveClass(item.id)}`}
                   onClick={() => handleNavClick(item.id)}
                   style={{ background: 'none', border: 'none', fontFamily: 'inherit' }}
+                  suppressHydrationWarning
                 >
                   {item.label}
                 </button>
@@ -105,6 +106,7 @@ export default function Navbar({ activeSection }) {
                 id="lang-en"
                 className={`lang-btn ${lang === 'en' ? 'active' : ''}`}
                 onClick={() => switchLang('en')}
+                suppressHydrationWarning
               >
                 EN
               </button>
@@ -112,6 +114,7 @@ export default function Navbar({ activeSection }) {
                 id="lang-ku"
                 className={`lang-btn ${lang === 'ku' ? 'active' : ''}`}
                 onClick={() => switchLang('ku')}
+                suppressHydrationWarning
               >
                 کوردی
               </button>
@@ -119,6 +122,7 @@ export default function Navbar({ activeSection }) {
                 id="lang-ar"
                 className={`lang-btn ${lang === 'ar' ? 'active' : ''}`}
                 onClick={() => switchLang('ar')}
+                suppressHydrationWarning
               >
                 عربی
               </button>

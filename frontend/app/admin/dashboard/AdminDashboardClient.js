@@ -56,11 +56,14 @@ const MoonIcon = () => (
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 );
+const ChartIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>;
+const GlobeIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+const PinIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
 
 const EMPTY_FORM = {
-  titleEn: '', titleKu: '', date: '', shortDescEn: '', shortDescKu: '',
-  contentEn: '', contentKu: '', coverImage: null, images: [],
-  icon: '📌', color: '#33AAFF', youtubeUrl: '',
+  titleEn: '', titleKu: '', titleAr: '', date: '', shortDescEn: '', shortDescKu: '', shortDescAr: '',
+  contentEn: '', contentKu: '', contentAr: '', coverImage: null, images: [],
+  icon: '', color: '#33AAFF', youtubeUrl: '',
 };
 
 // ─── Rich Text Editor ────────────────────────────────────────────────────────
@@ -189,6 +192,9 @@ function ActivityFormModal({ initial, onSave, onClose, saving, darkMode }) {
       titleEn: form.titleEn?.trim() || form.titleKu,
       shortDescEn: form.shortDescEn?.trim() || form.shortDescKu,
       contentEn: form.contentEn?.trim() || form.contentKu,
+      titleAr: form.titleAr?.trim() || form.titleKu,
+      shortDescAr: form.shortDescAr?.trim() || form.shortDescKu,
+      contentAr: form.contentAr?.trim() || form.contentKu,
     });
   }
 
@@ -262,6 +268,38 @@ function ActivityFormModal({ initial, onSave, onClose, saving, darkMode }) {
               />
             </div>
           </div>
+
+          {/* ── Arabic Section ── */}
+          <div style={{ borderTop: '1px solid rgba(51,170,255,0.1)', paddingTop: '20px', marginTop: '4px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '16px', textAlign: 'right' }}>
+              المحتوى العربي <span style={{ fontWeight: 400, color: '#334155' }}>(اختياري — يظهر عندما تكون اللغة AR)</span>
+            </div>
+
+            {/* AR Title */}
+            <div style={{ ...modal.field, marginBottom: '16px' }}>
+              <label style={{ ...modal.label, textAlign: 'right' }}>العنوان (AR)</label>
+              <input value={form.titleAr || ''} onChange={set('titleAr')} style={{ ...modal.input, direction: 'rtl', textAlign: 'right' }} placeholder="عنوان النشاط بالعربية" />
+            </div>
+
+            {/* AR Short Desc */}
+            <div style={{ ...modal.field, marginBottom: '16px' }}>
+              <label style={{ ...modal.label, textAlign: 'right' }}>وصف قصير (AR)</label>
+              <textarea value={form.shortDescAr || ''} onChange={set('shortDescAr')} style={{ ...modal.input, ...modal.textarea, minHeight: '80px', direction: 'rtl', textAlign: 'right' }} placeholder="وصف قصير بالعربية…" />
+            </div>
+
+            {/* AR Full Content */}
+            <div style={modal.field}>
+              <label style={{ ...modal.label, textAlign: 'right' }}>المحتوى الكامل (AR)</label>
+              <RichEditor
+                key={(initial?.id || 'new') + '-ar'}
+                value={form.contentAr || ''}
+                onChangeHTML={(html) => setForm(f => ({ ...f, contentAr: html }))}
+                placeholder="محتوى المقال بالكامل بالعربية"
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+
 
           {/* Cover Image */}
           <div style={modal.field}>
@@ -487,9 +525,9 @@ export default function AdminDashboardClient() {
         </div>
         <nav style={dash.nav}>
           <div style={dash.navItem}>
-            <span style={{ opacity: 0.6 }}>📊</span> داشبۆرد
+            <span style={{ opacity: 0.6, display: 'flex' }}><ChartIcon /></span> داشبۆرد
           </div>
-          <a href="/" style={dash.navLink} className="adm-nav-link"><span style={{ opacity: 0.6 }}>🌐</span> بینینی ماڵپەڕ</a>
+          <a href="/" style={dash.navLink} className="adm-nav-link"><span style={{ opacity: 0.6, display: 'flex' }}><GlobeIcon /></span> بینینی ماڵپەڕ</a>
         </nav>
         <button onClick={handleLogout} style={dash.logoutBtn}>
           <LogoutIcon /> دەرچوون
@@ -558,7 +596,7 @@ export default function AdminDashboardClient() {
                         <img src={a.coverImage} alt="" style={dash.thumb} onError={(e) => { e.target.style.display = 'none'; }} />
                       ) : (
                         <div style={{ ...dash.thumb, background: `${a.color || '#33AAFF'}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
-                          {a.icon || '📌'}
+                          {a.icon && typeof a.icon === 'string' && a.icon !== '📌' ? a.icon : <PinIcon />}
                         </div>
                       )}
                     </td>
@@ -598,7 +636,7 @@ export default function AdminDashboardClient() {
                     <img src={a.coverImage} alt="" className="adm-card-thumb" onError={(e) => { e.target.style.display = 'none'; }} />
                   ) : (
                     <div className="adm-card-thumb adm-card-icon" style={{ background: `${a.color || '#33AAFF'}22` }}>
-                      {a.icon || '📌'}
+                      {a.icon && typeof a.icon === 'string' && a.icon !== '📌' ? a.icon : <PinIcon />}
                     </div>
                   )}
                   <div className="adm-card-info">
@@ -775,8 +813,7 @@ const dash = {
     fontSize: '14px',
     fontWeight: 600,
     cursor: 'pointer',
-    boxShadow: '0 4px 14px rgba(51,170,255,0.3)',
-    transition: 'transform 0.15s, box-shadow 0.15s',
+    transition: 'transform 0.15s',
   },
   searchInput: {
     background: 'rgba(255,255,255,0.04)',
@@ -885,7 +922,6 @@ const dash = {
     fontSize: '14px',
     fontWeight: 600,
     zIndex: 9999,
-    boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
     animation: 'fadeIn 0.3s ease',
   },
 };
@@ -911,7 +947,6 @@ const modal = {
     maxWidth: '860px',
     maxHeight: '92vh',
     overflowY: 'auto',
-    boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
     fontFamily: "'Inter', sans-serif",
   },
   header: {
@@ -1082,7 +1117,6 @@ const modal = {
     fontSize: '14px',
     fontWeight: 600,
     cursor: 'pointer',
-    boxShadow: '0 4px 14px rgba(51,170,255,0.3)',
     transition: 'opacity 0.15s',
     fontFamily: 'inherit',
   },

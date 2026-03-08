@@ -24,7 +24,7 @@ export async function PUT(request, { params }) {
   try {
     const { id } = await params;
     const body = await request.json();
-    const { titleEn, titleKu, date, shortDescEn, shortDescKu, contentEn, contentKu, coverImage, images, icon, color, youtubeUrl } = body;
+    const { titleEn, titleKu, titleAr, date, shortDescEn, shortDescKu, shortDescAr, contentEn, contentKu, contentAr, coverImage, images, icon, color, youtubeUrl } = body;
 
     if (!titleEn || !date || !shortDescEn) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -40,14 +40,17 @@ export async function PUT(request, { params }) {
       ...data.activities[idx],
       titleEn: String(titleEn).trim(),
       titleKu: String(titleKu || '').trim(),
+      titleAr: String(titleAr || '').trim(),
       date: String(date),
       shortDescEn: String(shortDescEn).trim(),
       shortDescKu: String(shortDescKu || '').trim(),
+      shortDescAr: String(shortDescAr || '').trim(),
       contentEn: String(contentEn || '').trim(),
       contentKu: String(contentKu || '').trim(),
+      contentAr: String(contentAr || '').trim(),
       coverImage: coverImage || null,
       images: Array.isArray(images) ? images.slice(0, 5) : [],
-      icon: icon || data.activities[idx].icon || '📌',
+      icon: icon || data.activities[idx].icon,
       color: color || data.activities[idx].color || '#33AAFF',
       youtubeUrl: String(youtubeUrl || '').trim(),
       updatedAt: new Date().toISOString(),

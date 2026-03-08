@@ -19,7 +19,7 @@ export async function POST(request) {
   }
   try {
     const body = await request.json();
-    const { titleEn, titleKu, date, shortDescEn, shortDescKu, contentEn, contentKu, coverImage, images, icon, color, youtubeUrl } = body;
+    const { titleEn, titleKu, titleAr, date, shortDescEn, shortDescKu, shortDescAr, contentEn, contentKu, contentAr, coverImage, images, icon, color, youtubeUrl } = body;
 
     if (!titleEn || !date || !shortDescEn) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -30,14 +30,17 @@ export async function POST(request) {
       id: Date.now().toString(),
       titleEn: String(titleEn).trim(),
       titleKu: String(titleKu || '').trim(),
+      titleAr: String(titleAr || '').trim(),
       date: String(date),
       shortDescEn: String(shortDescEn).trim(),
       shortDescKu: String(shortDescKu || '').trim(),
+      shortDescAr: String(shortDescAr || '').trim(),
       contentEn: String(contentEn || '').trim(),
       contentKu: String(contentKu || '').trim(),
+      contentAr: String(contentAr || '').trim(),
       coverImage: coverImage || null,
       images: Array.isArray(images) ? images.slice(0, 5) : [],
-      icon: icon || '📌',
+      icon: icon || '',
       color: color || '#33AAFF',
       youtubeUrl: String(youtubeUrl || '').trim(),
       createdAt: new Date().toISOString(),

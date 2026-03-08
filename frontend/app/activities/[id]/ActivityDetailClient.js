@@ -32,7 +32,7 @@ function Lightbox({ src, onClose }) {
         style={{ position: 'absolute', top: '20px', right: '24px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', color: '#fff', fontSize: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         aria-label="Close"
       >×</button>
-      <img src={src} alt="" style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: '10px', objectFit: 'contain', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }} onClick={(e) => e.stopPropagation()} />
+      <img src={src} alt="" style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: '10px', objectFit: 'contain' }} onClick={(e) => e.stopPropagation()} />
     </div>
   );
 }
@@ -41,16 +41,38 @@ export default function ActivityDetailClient({ activity }) {
   const { lang, isRTL, t } = useLanguage();
   const [lightbox, setLightbox] = useState(null);
 
+  const CalendarIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'translateY(1px)' }}>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+  );
+
+  const ExpandIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <polyline points="9 21 3 21 3 15"></polyline>
+      <line x1="21" y1="3" x2="14" y2="10"></line>
+      <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+  );
+
   // Wrap single activity in array for the shared translation hook
   const { translatedActivities } = useActivityTranslation([activity]);
   const translated = translatedActivities[0];
 
   const title = lang === 'ku'
     ? (translated.titleKu || translated.titleEn)
-    : (translated.titleEn || translated.titleKu);
+    : lang === 'ar'
+    ? translated.titleAr
+    : translated.titleEn;
   const content = lang === 'ku'
     ? (translated.contentKu || translated.contentEn)
-    : (translated.contentEn || translated.contentKu);
+    : lang === 'ar'
+    ? translated.contentAr
+    : translated.contentEn;
   const allImages = [
     ...(activity.coverImage ? [activity.coverImage] : []),
     ...(activity.images || []),
@@ -77,7 +99,7 @@ export default function ActivityDetailClient({ activity }) {
           </div>
 
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(51,170,255,0.15)', border: '1px solid rgba(51,170,255,0.3)', borderRadius: '20px', padding: '5px 14px', fontSize: '13px', color: '#33AAFF', marginBottom: '18px' }}>
-            📅 {formatDate(activity.date, lang)}
+            <CalendarIcon /> {formatDate(activity.date, lang)}
           </div>
 
           <h1 dir={isRTL ? 'rtl' : 'ltr'} style={{ color: '#fff', fontSize: 'clamp(26px, 4vw, 52px)', fontWeight: 800, lineHeight: 1.2, margin: '0 0 16px', textAlign: isRTL ? 'right' : 'left' }}>
@@ -92,7 +114,7 @@ export default function ActivityDetailClient({ activity }) {
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             {/* Cover Image */}
             {activity.coverImage && (
-              <div style={{ marginBottom: '40px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.2)', cursor: 'pointer' }} onClick={() => setLightbox(activity.coverImage)}>
+              <div style={{ marginBottom: '40px', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setLightbox(activity.coverImage)}>
                 <img src={activity.coverImage} alt={title} style={{ width: '100%', maxHeight: '480px', objectFit: 'cover', display: 'block' }} />
               </div>
             )}
@@ -128,7 +150,7 @@ export default function ActivityDetailClient({ activity }) {
                     <div key={i} className="detail-gallery-item" onClick={() => setLightbox(img)}>
                       <img src={img} alt={`${title} – photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.3s' }} />
                       <div className="gallery-overlay">
-                        <span style={{ color: '#fff', fontSize: '24px' }}>⛶</span>
+                        <span style={{ color: '#fff' }}><ExpandIcon /></span>
                       </div>
                     </div>
                   ))}
@@ -143,7 +165,7 @@ export default function ActivityDetailClient({ activity }) {
               if (!videoId) return null;
               return (
                 <div style={{ marginTop: '48px' }}>
-                  <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: '14px', overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+                  <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: '14px', overflow: 'hidden' }}>
                     <iframe
                       src={`https://www.youtube-nocookie.com/embed/${videoId}`}
                       title="YouTube video"

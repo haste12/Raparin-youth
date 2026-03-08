@@ -12,8 +12,11 @@ export function useActivityTranslation(activities) {
       titleEn: act.titleEn || act.titleKu,
       shortDescEn: act.shortDescEn || act.shortDescKu,
       contentEn: act.contentEn || act.contentKu,
+      titleAr: act.titleAr || act.titleKu || act.titleEn,
+      shortDescAr: act.shortDescAr || act.shortDescKu || act.shortDescEn,
+      contentAr: act.contentAr || act.contentKu || act.contentEn,
     }));
-  }, [activities]);
+  }, [activities, lang]);
 
   return { translatedActivities, isTranslating: false };
 }
