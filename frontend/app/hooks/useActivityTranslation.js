@@ -1,182 +1,158 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '../LanguageContext';
 
-/**
- * Module-level translation cache.
- * Key: `${activityId}:en:${field}` → translated string
- * Survives component unmount/remount and language toggles.
- */
-const translationCache = new Map();
+// ─── Client-side translation cache (persists across re-renders & navigations) ─
+const clientCache = new Map();
 
-/**
- * Checks whether an activity's English fields are identical to the Kurdish ones,
- * meaning the admin only filled in Kurdish and auto-translation is needed.
- */
-function needsTranslation(activity) {
-  return (
-    !activity.titleEn ||
-    activity.titleEn === activity.titleKu ||
-    !activity.shortDescEn ||
-    activity.shortDescEn === activity.shortDescKu
-  );
+function getCached(text) {
+  return text && clientCache.has(text) ? clientCache.get(text) : null;
+}
+
+function setCache(original, translated) {
+  if (original && translated) {
+    clientCache.set(original, translated);
+  }
 }
 
 /**
- * Returns a stable string key derived from the activities array contents.
- * Used as the dependency instead of the array reference (which changes every render).
+ * Call /api/translate to translate an array of texts via Gemini.
+ * Only sends texts that are NOT already cached.
  */
-function getActivitiesKey(activities) {
-  return activities.map((a) => `${a.id}:${a.updatedAt || a.createdAt || ''}`).join('|');
-}
+async function translateTexts(texts) {
+  // Separate cached from uncached
+  const results = new Array(texts.length);
+  const uncachedIndices = [];
+  const uncachedTexts = [];
 
-/**
- * useActivityTranslation
- *
- * Accepts an array of activities (or a single activity wrapped in an array).
- * Returns { translatedActivities, isTranslating }
- *
- * When lang === 'ku':  returns the original activities unchanged.
- * When lang === 'en':  returns activities with English fields populated,
- *                      either from cache or via a batched /api/translate call.
- */
-export function useActivityTranslation(activities) {
-  const { lang } = useLanguage();
-
-  // Keep a ref to the latest activities so the effect body can read them
-  // without listing the array itself as a dependency (avoids infinite loop).
-  const activitiesRef = useRef(activities);
-  activitiesRef.current = activities;
-
-  const [translatedActivities, setTranslatedActivities] = useState(activities);
-  const [isTranslating, setIsTranslating] = useState(false);
-
-  // Stable key — only changes when the actual activity data changes (id / timestamp).
-  // This is the real dependency, not the array reference.
-  const activitiesKey = getActivitiesKey(activities);
-
-  // Ref so async callbacks can check whether the language has changed mid-flight.
-  const langRef = useRef(lang);
-  langRef.current = lang;
-
-  useEffect(() => {
-    const current = activitiesRef.current;
-
-    // Kurdish: always use originals immediately — no async work needed.
-    if (lang === 'ku') {
-      setTranslatedActivities(current);
-      return;
+  for (let i = 0; i < texts.length; i++) {
+    const cached = getCached(texts[i]);
+    if (cached) {
+      results[i] = cached;
+    } else if (texts[i] && texts[i].trim()) {
+      uncachedIndices.push(i);
+      uncachedTexts.push(texts[i]);
+    } else {
+      results[i] = texts[i];
     }
+  }
 
-    // English: check which activities actually need translation.
-    const toTranslate = current.filter(needsTranslation);
-
-    if (toTranslate.length === 0) {
-      // All activities already have distinct English content — use as-is.
-      setTranslatedActivities(current);
-      return;
-    }
-
-    // Check cache first — if every activity that needs translation is already
-    // cached we can resolve synchronously without showing a spinner.
-    const allCached = toTranslate.every((act) =>
-      translationCache.has(`${act.id}:en:title`)
-    );
-
-    if (allCached) {
-      setTranslatedActivities(applyCache(current));
-      return;
-    }
-
-    // At least one activity needs a network call.
-    setIsTranslating(true);
-
-    translateActivities(toTranslate)
-      .then((results) => {
-        // Store results in the module-level cache — only if actually translated.
-        results.forEach(({ id, title, shortDesc, content }) => {
-          if (isDifferentText(title))     translationCache.set(`${id}:en:title`, title);
-          if (isDifferentText(shortDesc)) translationCache.set(`${id}:en:shortDesc`, shortDesc);
-          if (content !== undefined && isDifferentText(content)) {
-            translationCache.set(`${id}:en:content`, content);
-          }
-        });
-
-        // Only update state if the language hasn't changed while we were waiting.
-        if (langRef.current === 'en') {
-          setTranslatedActivities(applyCache(activitiesRef.current));
-        }
-        setIsTranslating(false);
-      })
-      .catch(() => {
-        // Fallback: show Kurdish originals and stop the spinner.
-        setIsTranslating(false);
-      });
-
-  // ⚠️  activitiesKey (not `activities`) is intentional — `activities` is a new
-  //    array reference on every render, which would cause an infinite loop.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, activitiesKey]);
-
-  return { translatedActivities, isTranslating };
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Checks if text is truthy and not purely whitespace */
-function isDifferentText(text) {
-  return Boolean(text && typeof text === 'string' && text.trim().length > 0);
-}
-
-/** Merge cached translations back into the activities array. */
-function applyCache(activities) {
-  return activities.map((act) => {
-    if (!needsTranslation(act)) return act;
-    return {
-      ...act,
-      titleEn:    translationCache.get(`${act.id}:en:title`)    ?? act.titleKu,
-      shortDescEn: translationCache.get(`${act.id}:en:shortDesc`) ?? act.shortDescKu,
-      contentEn:  translationCache.get(`${act.id}:en:content`)  ?? act.contentKu,
-    };
-  });
-}
-
-/**
- * Sends all activities that need translation in a single batched POST request.
- * Returns an array of { id, title, shortDesc, content? } resolved translations.
- */
-async function translateActivities(activities) {
-  const tasks = [];
-  const offsets = [];
-
-  activities.forEach((act) => {
-    const base = tasks.length;
-    tasks.push(act.titleKu || '');
-    tasks.push(act.shortDescKu || '');
-    const hasContent = !!act.contentKu;
-    if (hasContent) tasks.push(act.contentKu);
-
-    offsets.push({
-      id: act.id,
-      titleIdx:    base,
-      shortDescIdx: base + 1,
-      contentIdx:  hasContent ? base + 2 : null,
-    });
-  });
+  // If everything was cached, return immediately
+  if (uncachedTexts.length === 0) return results;
 
   const res = await fetch('/api/translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ texts: tasks, targetLang: 'en', sourceLang: 'ku' }),
+    body: JSON.stringify({ texts: uncachedTexts }),
   });
 
-  if (!res.ok) throw new Error('Translation API error');
-  const { translations } = await res.json();
+  if (!res.ok) {
+    throw new Error(`Translation API returned ${res.status}`);
+  }
 
-  return offsets.map(({ id, titleIdx, shortDescIdx, contentIdx }) => ({
-    id,
-    title:     translations[titleIdx]    ?? '',
-    shortDesc: translations[shortDescIdx] ?? '',
-    content:   contentIdx !== null ? translations[contentIdx] : undefined,
-  }));
+  const data = await res.json();
+  const { translations } = data;
+
+  // Populate results and cache
+  for (let j = 0; j < uncachedIndices.length; j++) {
+    const idx = uncachedIndices[j];
+    const translated = translations[j] || texts[idx];
+    results[idx] = translated;
+    setCache(texts[idx], translated);
+  }
+
+  return results;
+}
+
+export function useActivityTranslation(activities) {
+  const { lang } = useLanguage();
+  const [translatedActivities, setTranslatedActivities] = useState(activities);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const abortRef = useRef(null);
+
+  const translate = useCallback(async () => {
+    if (lang === 'ku' || !activities || activities.length === 0) {
+      setTranslatedActivities(activities);
+      setIsTranslating(false);
+      return;
+    }
+
+    // Collect all Kurdish texts that need translation
+    const textsToTranslate = [];
+    const fieldMap = []; // tracks which activity+field each text belongs to
+
+    activities.forEach((act, i) => {
+      const fields = [
+        { key: 'titleEn', src: act.titleKu, existing: act.titleEn },
+        { key: 'shortDescEn', src: act.shortDescKu, existing: act.shortDescEn },
+        { key: 'contentEn', src: act.contentKu, existing: act.contentEn },
+      ];
+      fields.forEach(({ key, src, existing }) => {
+        // Translate if: no English text, OR English text is identical to Kurdish (not actually translated)
+        const needsTranslation = !existing || existing === src;
+        if (needsTranslation && src && src.trim()) {
+          textsToTranslate.push(src);
+          fieldMap.push({ actIndex: i, field: key });
+        }
+      });
+    });
+
+    // If all fields already have English text, just use them
+    if (textsToTranslate.length === 0) {
+      setTranslatedActivities(
+        activities.map((act) => ({
+          ...act,
+          titleEn: act.titleEn || act.titleKu,
+          shortDescEn: act.shortDescEn || act.shortDescKu,
+          contentEn: act.contentEn || act.contentKu,
+        }))
+      );
+      setIsTranslating(false);
+      return;
+    }
+
+    // Check if everything is already cached client-side
+    const allCached = textsToTranslate.every((t) => getCached(t));
+    if (!allCached) {
+      setIsTranslating(true);
+    }
+
+    try {
+      const translated = await translateTexts(textsToTranslate);
+
+      // Build updated activities array
+      const updated = activities.map((act) => ({ ...act }));
+      fieldMap.forEach(({ actIndex, field }, j) => {
+        updated[actIndex][field] = translated[j];
+      });
+
+      // Fill remaining fallbacks
+      updated.forEach((act) => {
+        act.titleEn = act.titleEn || act.titleKu;
+        act.shortDescEn = act.shortDescEn || act.shortDescKu;
+        act.contentEn = act.contentEn || act.contentKu;
+      });
+
+      setTranslatedActivities(updated);
+    } catch (err) {
+      console.error('Translation failed, falling back to Kurdish:', err.message);
+      // Fallback: show Kurdish text if translation fails
+      setTranslatedActivities(
+        activities.map((act) => ({
+          ...act,
+          titleEn: act.titleEn || act.titleKu,
+          shortDescEn: act.shortDescEn || act.shortDescKu,
+          contentEn: act.contentEn || act.contentKu,
+        }))
+      );
+    } finally {
+      setIsTranslating(false);
+    }
+  }, [lang, activities]);
+
+  useEffect(() => {
+    translate();
+  }, [translate]);
+
+  return { translatedActivities, isTranslating };
 }

@@ -9,8 +9,10 @@ export function LanguageProvider({ children }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    const savedLang = localStorage.getItem('raparin-lang') || 'en';
+    const raw = localStorage.getItem('raparin-lang');
+    const savedLang = raw === 'ku' ? 'ku' : 'en';
     const savedTheme = localStorage.getItem('raparin-theme') || 'light';
+    if (raw && raw !== savedLang) localStorage.setItem('raparin-lang', savedLang);
     setLang(savedLang);
     setTheme(savedTheme);
     document.documentElement.dir = savedLang === 'ku' ? 'rtl' : 'ltr';
@@ -19,10 +21,11 @@ export function LanguageProvider({ children }) {
   }, []);
 
   const switchLang = (newLang) => {
-    setLang(newLang);
-    localStorage.setItem('raparin-lang', newLang);
-    document.documentElement.dir = newLang === 'ku' ? 'rtl' : 'ltr';
-    document.documentElement.lang = newLang === 'ku' ? 'ckb' : 'en';
+    const validLang = newLang === 'ku' ? 'ku' : 'en';
+    setLang(validLang);
+    localStorage.setItem('raparin-lang', validLang);
+    document.documentElement.dir = validLang === 'ku' ? 'rtl' : 'ltr';
+    document.documentElement.lang = validLang === 'ku' ? 'ckb' : 'en';
   };
 
   const toggleTheme = () => {
