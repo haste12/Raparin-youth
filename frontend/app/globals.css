@@ -199,9 +199,12 @@ body {
 /* Kurdish/RTL support */
 body.rtl,
 [dir="rtl"] {
-  font-family: 'Rabar_019', 'Inter', sans-serif;
   direction: rtl;
   text-align: right;
+}
+html[lang="ckb"] body,
+html[lang="ckb"] [dir="rtl"] {
+  font-family: 'Rabar_019', sans-serif;
 }
 
 /* ============================================
