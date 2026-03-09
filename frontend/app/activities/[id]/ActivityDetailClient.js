@@ -191,7 +191,12 @@ export default function ActivityDetailClient({ activity }) {
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
 
       <style>{`
-        .article-html { color: var(--color-text); }
+        .article-html { color: var(--color-text); font-style: normal; }
+        .article-html *, .article-html p, .article-html span,
+        .article-html em, .article-html i, .article-html b, .article-html strong {
+          font-style: normal !important;
+          font-family: inherit !important;
+        }
         html[data-theme="dark"] .article-html,
         html[data-theme="dark"] .article-html * {
           color: #FFFFFF !important;
