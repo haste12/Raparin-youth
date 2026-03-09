@@ -13,10 +13,12 @@ const SECURITY_HEADERS = {
 
 // ─── Trusted origins for CSRF checks ─────────────────────────────────────────
 // Add your production domain via NEXT_PUBLIC_SITE_URL in .env.local / Vercel env vars.
+// ADDITIONAL_TRUSTED_ORIGINS can hold comma-separated extra origins.
 const TRUSTED_ORIGINS = new Set(
   [
     'http://localhost:3000',
     process.env.NEXT_PUBLIC_SITE_URL, // e.g. https://raparin-youth.vercel.app
+    ...(process.env.ADDITIONAL_TRUSTED_ORIGINS || '').split(',').map(s => s.trim()),
   ].filter(Boolean)
 );
 
