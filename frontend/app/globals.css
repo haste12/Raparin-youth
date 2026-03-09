@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
 @font-face {
   font-family: 'Rabar_019';
@@ -8,14 +8,19 @@
   font-display: swap;
 }
 
-/* ── Kurdish / RTL font ─────────────────────────────────────── */
-:root { --font-ku: 'Rabar_019', sans-serif; }
+/* ── Kurdish / Arabic RTL fonts ─────────────────────────────── */
+:root {
+  --font-ku: 'Rabar_019', sans-serif;
+  --font-ar: 'Cairo', sans-serif;
+}
 html[lang="ckb"] body,
-html[dir="rtl"] body,
-[dir="rtl"],
 :lang(ku),
 :lang(ckb) {
   font-family: var(--font-ku) !important;
+}
+html[lang="ar"] body,
+:lang(ar) {
+  font-family: var(--font-ar) !important;
 }
 
 /* ============================================

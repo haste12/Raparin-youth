@@ -125,11 +125,11 @@ export default function ActivityDetailClient({ activity }) {
                 <div
                   dir={isRTL ? 'rtl' : 'ltr'}
                   className="article-html"
-                  style={{ color: 'var(--color-text)', fontSize: '17px', lineHeight: 1.85, marginBottom: '48px', textAlign: isRTL ? 'right' : 'left', wordBreak: 'break-word', overflowWrap: 'break-word', overflowX: 'hidden', fontFamily: isRTL ? "'Rabar_019',sans-serif" : 'inherit' }}
+                  style={{ color: 'var(--color-text)', fontSize: '17px', lineHeight: 1.85, marginBottom: '48px', textAlign: isRTL ? 'right' : 'left', wordBreak: 'break-word', overflowWrap: 'break-word', overflowX: 'hidden', fontFamily: lang === 'ar' ? "'Cairo',sans-serif" : lang === 'ku' ? "'Rabar_019',sans-serif" : 'inherit' }}
                   dangerouslySetInnerHTML={{ __html: content }}
                 />
               ) : (
-                <div dir={isRTL ? 'rtl' : 'ltr'} style={{ color: 'var(--color-text)', fontSize: '17px', lineHeight: 1.85, marginBottom: '48px', textAlign: isRTL ? 'right' : 'left', wordBreak: 'break-word', overflowWrap: 'break-word', overflowX: 'hidden', fontFamily: isRTL ? "'Rabar_019',sans-serif" : 'inherit' }}>
+                <div dir={isRTL ? 'rtl' : 'ltr'} style={{ color: 'var(--color-text)', fontSize: '17px', lineHeight: 1.85, marginBottom: '48px', textAlign: isRTL ? 'right' : 'left', wordBreak: 'break-word', overflowWrap: 'break-word', overflowX: 'hidden', fontFamily: lang === 'ar' ? "'Cairo',sans-serif" : lang === 'ku' ? "'Rabar_019',sans-serif" : 'inherit' }}>
                   {content.split(/\n\n+/).map((block, i) => {
                     const trimmed = block.trim();
                     if (!trimmed) return null;
@@ -191,6 +191,14 @@ export default function ActivityDetailClient({ activity }) {
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
 
       <style>{`
+        .article-html { color: var(--color-text) !important; }
+        .article-html p, .article-html span, .article-html li, .article-html td, .article-html th {
+          color: inherit !important;
+        }
+        .article-html h1, .article-html h2, .article-html h3,
+        .article-html h4, .article-html h5, .article-html h6 {
+          color: var(--color-text) !important;
+        }
         .detail-hero {
           min-height: 380px;
           padding: 140px 0 60px;
