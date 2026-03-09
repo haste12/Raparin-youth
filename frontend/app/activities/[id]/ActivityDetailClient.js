@@ -191,13 +191,10 @@ export default function ActivityDetailClient({ activity }) {
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
 
       <style>{`
-        .article-html { color: var(--color-text) !important; }
-        .article-html p, .article-html span, .article-html li, .article-html td, .article-html th {
-          color: inherit !important;
-        }
-        .article-html h1, .article-html h2, .article-html h3,
-        .article-html h4, .article-html h5, .article-html h6 {
-          color: var(--color-text) !important;
+        .article-html { color: var(--color-text); }
+        html[data-theme="dark"] .article-html,
+        html[data-theme="dark"] .article-html * {
+          color: #FFFFFF !important;
         }
         .detail-hero {
           min-height: 380px;
