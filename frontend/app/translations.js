@@ -51,7 +51,7 @@ const translations = {
           'Organize training courses and workshops that support personal and professional development.',
           'Encourage youth to participate in volunteer work and community service.',
           'Create opportunities for cooperation and teamwork among young people.',
-          'Support the participation of girls and women in social and professional fields.',
+          'Empower and create opportunities for girls and women to participate in social and professional fields.',
           'Raise awareness about social, environmental, and cultural issues.',
           'Raise awareness about the risks of irregular migration and help young people find better opportunities within their communities.',
           'Work to reduce drug abuse and raise awareness about its negative effects on youth and society.'
@@ -82,8 +82,8 @@ const translations = {
     // Activities
     activities: {
       tag: 'What We Do',
-      title: 'Our Activities & Programs',
-      description: 'We run a wide range of programs designed to empower youth, foster creativity, and build a stronger community in Raparin.',
+      title: 'Our Activities',
+      description: 'Through various activities and trainings, we try to encourage young people to participate in the growth and development of society.',
       filters: {
         all: 'All',
         training: 'Training',
@@ -194,7 +194,7 @@ const translations = {
           'ڕێکخستنی خولی ڕاهێنان و وۆرکشۆپ بۆ گەشەی کەسی و پیشەیی.',
           'هاندانی گەنجان بۆ بەشداری کردنیان لە خزمەتگوزاری و کارە خۆبەخشەکان.',
           'دروستکردنی دەرفەت بۆ هاوکاری و کارکردنی هاوبەش لە ناو گەنجاندا.',
-          'پشتگیری لە بەشداری کچان و ژنان لە بوارە کۆمەڵایەتی و پیشەییەکاندا.',
+          'بەهێزکردن و دروستکردنی دەرفەت بۆ کچان و ژنان بۆ بەشداری لە بوارە کۆمەڵایەتی و پیشەییەکاندا.',
           'بەرزکردنەوەی هۆشیاری لەسەر کێشە کۆمەڵایەتی، ژینگەیی و کلتوورییەکان.',
           'بەرزکردنەوەی هۆشیاری لەسەر مەترسییەکانی کۆچی نایاسایی و یارمەتیدانی گەنجان بۆ دۆزینەوەی دەرفەتی باشتر لە ناو کۆمەڵگاکانیاندا.',
           'کارکردن بۆ کەمکردنەوەی بەکارهێنانی ماددە هۆشبەرەکان و بەرزکردنەوەی هۆشیاری لەسەر کاریگەرییە نەرێنییەکانیان لەسەر گەنجان و کۆمەڵگا.'
@@ -224,8 +224,8 @@ const translations = {
     // Activities
     activities: {
       tag: 'چی دەکەین',
-      title: 'چالاکی و بەرنامەکانمان',
-      description: 'ئێمە ژمارەیەکی فراوان لە بەرنامەکان جێبەجێ دەکەین کە بۆ بەهێزکردنی گەنجان، پرۆموتکردنی دیاریداری، و بینانی کۆمەڵگایەکی بەهێزتر لە ڕاپەڕین دیزاین کراون.',
+      title: 'چالاکییەکانمان',
+      description: 'لە ڕێگەی چالاکی و ڕاهێنانە جۆراوجۆرەکانەوە هەوڵ دەدەین گەنجان هانبدەین بۆ بەشداری لە گەشە و پێشکەوتنی کۆمەڵگا',
       filters: {
         all: 'هەمووی',
         training: 'پەروەردە',
@@ -336,7 +336,7 @@ const translations = {
           'تنظيم دورات تدريبية وورش عمل تدعم التنمية الشخصية والمهنية.',
           'تشجيع الشباب على المشاركة في العمل التطوعي وخدمة المجتمع.',
           'خلق فرص للتعاون والعمل الجماعي بين الشباب.',
-          'دعم مشاركة الفتيات والنساء في المجالات الاجتماعية والمهنية.',
+          'تمكين وخلق فرص للفتيات والنساء للمشاركة في المجالات الاجتماعية والمهنية.',
           'رفع الوعي حول القضايا الاجتماعية والبيئية والثقافية.',
           'رفع الوعي حول مخاطر الهجرة غير الشرعية ومساعدة الشباب في إيجاد فرص أفضل داخل مجتمعاتهم.',
           'العمل على الحد من تعاطي المخدرات ورفع الوعي حول آثارها السلبية على الشباب والمجتمع.'
@@ -367,8 +367,8 @@ const translations = {
     // Activities
     activities: {
       tag: 'ماذا نفعل',
-      title: 'أنشطتنا وبرامجنا',
-      description: 'ننفذ مجموعة واسعة من البرامج المصممة لتمكين الشباب وتعزيز الإبداع وبناء مجتمع أقوى في رابارين.',
+      title: 'أنشطتنا',
+      description: 'من خلال الأنشطة والتدريبات المختلفة، نحاول تشجيع الشباب على المشاركة في نمو وتطور المجتمع.',
       filters: {
         all: 'الكل',
         training: 'تدريب',
